@@ -4,6 +4,7 @@ import { Map } from "react-map-gl";
 import Button from 'react-bootstrap/Button';
 import {FlyToInterpolator} from '@deck.gl/core';
 import {IconLayer} from '@deck.gl/layers';
+import {WebMercatorViewport} from '@deck.gl/core';
 
 // Set your mapbox access token here
 
@@ -157,17 +158,12 @@ function Home() {
          controller={true}// allows the user to move the map around
          getTooltip={({object}) => object && `${object.state ? object.state : object.name ? object.name : object.city}\n${1932}`} 
          onViewStateChange={({viewState})=>{
-          if(viewState.zoom<=3.5)
+          const viewport = new WebMercatorViewport(viewState);
+          console.log(viewport.unproject([0,0]));
+          console.log(viewport.unproject([viewState.width,viewState.height]));
+          if(viewState.zoom<=5)
           {
             setLayer(stateLayers);
-          }
-          else if(viewState.zoom<=5)
-          {
-            setLayer(countyLayers);
-          }
-          else if(viewState.zoom<=7)
-          {
-            setLayer(cityLayers);
           }
           else
           {

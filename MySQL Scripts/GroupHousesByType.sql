@@ -4,7 +4,7 @@ DELIMITER $$
 CREATE PROCEDURE `GroupHousesByType` (IN minPrice INT, IN maxPrice INT, IN housingTypes VARCHAR(255), IN minSqFeet INT, 
 IN maxSqFeet INT, IN minBeds INT, IN maxBeds INT, IN minBaths INT, IN maxBaths INT, IN in_cats_allowed INT,
 IN in_dogs_allowed INT, IN in_smoking_allowed INT, IN in_wheelchair_access INT, IN in_electric_vehicle_charge INT, 
-IN in_comes_furnished INT, IN city_array VARCHAR(255), IN county_array VARCHAR(255), IN state_array VARCHAR(255))
+IN in_comes_furnished INT, IN minLat DOUBLE, IN maxLat DOUBLE, IN minLong DOUBLE, IN maxLong DOUBLE)
 
 BEGIN
 
@@ -31,11 +31,9 @@ AND
 AND
 (comes_furnished = in_comes_furnished OR in_comes_furnished is NULL)
 AND 
-(FIND_IN_SET(city,city_array) OR city_array is NULL)
+(lat>=minLat AND lat<=maxLat)
 AND 
-(FIND_IN_SET(county,county_array) OR county_array is NULL)
-AND 
-(FIND_IN_SET(state,state_array) OR state_array is NULL)
+(`long`>=minLong AND `long`<=maxLong)
 GROUP BY `Type Category` ORDER BY `index` ASC;
 
 END$$

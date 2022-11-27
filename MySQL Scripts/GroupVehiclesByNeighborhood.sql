@@ -5,7 +5,7 @@ CREATE PROCEDURE `GroupVehiclesByNeighborhood` (IN minPrice INT, IN maxPrice INT
 IN manufacturerCategories VARCHAR(255), IN modelCategories VARCHAR(255), IN conditionCategories VARCHAR(255), 
 IN cylinderCategories VARCHAR(255), IN fuelCategories VARCHAR(255), IN titleStatusCategories VARCHAR(255), 
 IN transmissionCategories VARCHAR(255),  IN driveCategories VARCHAR(255), IN typeCategories VARCHAR(255), 
-IN in_min_odometer INT, IN in_max_odometer INT, IN city_array VARCHAR(255))
+IN in_min_odometer INT, IN in_max_odometer INT, IN minLat DOUBLE, IN maxLat DOUBLE, IN minLong DOUBLE, IN maxLong DOUBLE)
 
 BEGIN
 
@@ -33,8 +33,10 @@ AND
 (FIND_IN_SET(Type_Category,typeCategories) OR typeCategories is NULL)
 AND
 (odometer >= in_min_odometer AND odometer <= in_max_odometer)
-AND
-(FIND_IN_SET(city,city_array) OR city_array is NULL)
+AND 
+(lat>=minLat AND lat<=maxLat)
+AND 
+(`long`>=minLong AND `long`<=maxLong)
 GROUP BY neighbourhood ORDER BY `index` ASC;
 
 END$$

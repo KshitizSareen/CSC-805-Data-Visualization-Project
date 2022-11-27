@@ -1,0 +1,42 @@
+Use DataVis_Project_Database;
+
+DELIMITER $$
+CREATE PROCEDURE `SearchHouses` (IN minPrice INT, IN maxPrice INT, IN housingTypes VARCHAR(255), IN minSqFeet INT, 
+IN maxSqFeet INT, IN minBeds INT, IN maxBeds INT, IN minBaths INT, IN maxBaths INT, IN in_cats_allowed INT,
+IN in_dogs_allowed INT, IN in_smoking_allowed INT, IN in_wheelchair_access INT, IN in_electric_vehicle_charge INT, 
+IN in_comes_furnished INT, IN city_array VARCHAR(255), IN county_array VARCHAR(255), IN state_array VARCHAR(255))
+
+BEGIN
+
+SELECT * FROM Housing_Data
+WHERE (price >= minPrice AND price<=maxPrice) 
+AND 
+(FIND_IN_SET(type,housingTypes) OR housingTypes is NULL)
+AND
+(sqfeet>= minSqFeet AND sqFeet<=maxSqFeet)
+AND
+(beds>=minBeds AND beds<=maxBeds)
+AND
+(baths>=minBaths AND baths<=maxBaths)
+AND
+(cats_allowed=in_cats_allowed OR in_cats_allowed is NULL)
+AND
+(dogs_allowed=in_dogs_allowed OR in_dogs_allowed is NULL)
+AND
+(smoking_allowed=in_smoking_allowed OR in_smoking_allowed is NULL)
+AND
+(wheelchair_access = in_wheelchair_access OR in_wheelchair_access is NULL)
+AND 
+(electric_vehicle_charge = in_electric_vehicle_charge OR in_electric_vehicle_charge is NULL)
+AND
+(comes_furnished = in_comes_furnished OR in_comes_furnished is NULL)
+AND 
+(FIND_IN_SET(city,city_array) OR city_array is NULL)
+AND 
+(FIND_IN_SET(county,county_array) OR county_array is NULL)
+AND 
+(FIND_IN_SET(state,state_array) OR state_array is NULL)
+ORDER BY `index` ASC;
+
+END$$
+DELIMITER ;

@@ -1,56 +1,34 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { useState } from 'react';
 
-export default function HomeFilters({chartsDispatch})
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+
+const Manufacturers= require('../../Data/carManufacturers.json');
+
+
+export default function CarFilters({chartsDispatch})
 {
+    const [selectedManufacturers,setSelectedManufacturers]=useState([]);
+    const fuelTypes=[['Gas','Diesel','Hybrid'],['Electric','Other']]
+    const vehicleTypes=[['Truck','Pickup','Bus','Coupe','Mini-van'],['SUV','Sedan','Offroad','Van','Convertible'],['Hatchback','Wagon','Other']]
 
-    const HousingTypesArray=[['Apartment','Condo','Manufactured','Duplex'],['Townhouse','Loft','House','Cottage/Cabin'],['Flat','In-law','Land','Assisted Living']]
-    const booleanFilters=[["Cats Allowed","Dogs Allowed","Smoking Allowed"],["Wheelchair Access","Electric Vehicle Charge","Comes Furnished"]]
     return(
         <div style={{
-          height: '90%',
-          justifyContent: 'space-evenly',
-          alignItems: 'center',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-                           <p style={{
-              alignSelf: 'center',
-              marginBottom: '1%'
-             }}>Housing Types</p>
-        <div style={{
+            height: '90%',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
             display: 'flex',
-            flexDirection: 'row',
-            marginBottom: '3%',
-            width: 0.3*window.parent.innerWidth,
-            justifyContent: 'space-evenly'
+            flexDirection: 'column'
           }}>
-            {
-              HousingTypesArray.map(typeArray=>{
-                return(
-                  <Form style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}>
-                    {
-                    typeArray.map(type=>{
-                      return(
-                        <Form.Check
-                        label={type}
-                        name="group1"
-                        type={"checkbox"}
-                      />
-                      )
-                    })
-                  }
-                  </Form>
-                )
-              })
-            }
-            </div>
-    
-          <div style={{
+            <div style={{
             display: 'flex',
             flexDirection: 'column',
             marginBottom: '3%',
@@ -80,11 +58,11 @@ export default function HomeFilters({chartsDispatch})
                  <p style={{
               alignSelf: 'center',
               marginBottom: '1%'
-             }}>Square Feet</p>
+             }}>Year</p>
              <div style={{
               display: 'flex',
               alignSelf: 'center',
-              justifyContent: 'space-evenly'
+              justifyContent: 'space-evenly',
              }}>
              <Form.Control type="number" placeholder="Minimum"  style={{
               width: '30%'
@@ -102,11 +80,11 @@ export default function HomeFilters({chartsDispatch})
                  <p style={{
               alignSelf: 'center',
               marginBottom: '1%'
-             }}>No. of Beds</p>
+             }}>Mileage</p>
              <div style={{
               display: 'flex',
               alignSelf: 'center',
-              justifyContent: 'space-evenly'
+              justifyContent: 'space-evenly',
              }}>
              <Form.Control type="number" placeholder="Minimum"  style={{
               width: '30%'
@@ -120,24 +98,51 @@ export default function HomeFilters({chartsDispatch})
             display: 'flex',
             flexDirection: 'column',
             marginBottom: '3%',
+            width: '100%'
           }}>
-                 <p style={{
+          <Autocomplete
+      multiple
+      limitTags={10}
+      id="checkboxes-tags-demo"
+      options={Manufacturers}
+      disableCloseOnSelect
+      getOptionLabel={(option) => option.name}
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
+          <Checkbox
+            icon={icon}
+            checkedIcon={checkedIcon}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {option.name}
+        </li>
+      )}
+      style={{ width: '90%', alignSelf: 'center'}}
+      renderInput={(params) => (
+        <TextField {...params} label="Manufacturers" placeholder="Manufacturers"/>
+      )}
+      onChange={(event,value)=>{
+        if(value.length>10)
+        {
+            alert("You cannot select more than 10 items")
+            value.pop();
+        }
+        setSelectedManufacturers(value)
+      }}
+      value={selectedManufacturers}
+      size='small'
+    />
+    </div>
+              <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: '3%',
+          }}>
+                               <p style={{
               alignSelf: 'center',
               marginBottom: '1%'
-             }}>No. of Baths</p>
-             <div style={{
-              display: 'flex',
-              alignSelf: 'center',
-              justifyContent: 'space-evenly'
-             }}>
-             <Form.Control type="number" placeholder="Minimum"  style={{
-              width: '30%'
-             }} />
-             <Form.Control type="number" placeholder="Maximum"  style={{
-              width: '30%'
-             }} />
-             </div>
-          </div>
+             }}>Fuel Types</p>
         <div style={{
             display: 'flex',
             flexDirection: 'row',
@@ -146,12 +151,11 @@ export default function HomeFilters({chartsDispatch})
             justifyContent: 'space-evenly'
           }}>
             {
-              booleanFilters.map(typeArray=>{
+              fuelTypes.map(typeArray=>{
                 return(
                   <Form style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
                   }}>
                     {
                     typeArray.map(type=>{
@@ -169,15 +173,56 @@ export default function HomeFilters({chartsDispatch})
               })
             }
             </div>
+            </div>
+            <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: '3%',
+          }}>
+            <p style={{
+              alignSelf: 'center',
+              marginBottom: '1%'
+             }}>Vehicle Types</p>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginBottom: '3%',
+            width: 0.3*window.parent.innerWidth,
+            justifyContent: 'space-evenly'
+          }}>
+            {
+              vehicleTypes.map(typeArray=>{
+                return(
+                  <Form style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}>
+                    {
+                    typeArray.map(type=>{
+                      return(
+                        <Form.Check
+                        label={type}
+                        name="group1"
+                        type={"checkbox"}
+                      />
+                      )
+                    })
+                  }
+                  </Form>
+                )
+              })
+            }
+            </div>
+            </div>
         <Button style={{
-          alignSelf: 'center'
+          marginBottom: '3%'
         }} as="a" variant="primary" onClick={()=>{
                   window.scrollTo(0,window.parent.innerHeight)
                   chartsDispatch({
                     type: 'changeChartText'
                   })
                 }} >
-                    Search Homes
+                    Search Cars
                 </Button>
                 <Button as="a" variant="primary" onClick={()=>{
                   window.scrollTo(window.parent.innerWidth,0)

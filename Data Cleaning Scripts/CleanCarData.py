@@ -1,30 +1,123 @@
 import pandas as pd
-import requests
-
+import json
 carDataFrame=pd.read_csv("./Data/vehicles.csv")
 
 cleanedCarDataFrame = carDataFrame.dropna(subset=['id', 'url','price','year','manufacturer','model','condition','cylinders','fuel','odometer','title_status','transmission','drive','type','image_url', 'lat','long']).drop(columns=['id','url','region','region_url', 'state','VIN','county','posting_date','size','paint_color'])
 
 
+carModels=cleanedCarDataFrame.model.unique()
+
+modelsSet={}
+models={}
+k=0
+for ind in cleanedCarDataFrame.index:
+    model=cleanedCarDataFrame['model'][ind]
+    splitTemp = model.split(' ')
+    newWordArray=[]
+    for word in splitTemp:
+        if word!="":
+            newWordArray.append(word[0].upper()+word[1:])      
+    newModel = ' '.join(newWordArray)
+    if not modelsSet.get(newModel):
+        modelsSet[newModel]=True
+        manufacturer = cleanedCarDataFrame['manufacturer'][ind]
+        splitTemp = manufacturer.split(' ')
+        newWordArray=[]
+        for word in splitTemp:
+            if word!="":
+                newWordArray.append(word[0].upper()+word[1:])      
+        newManufacturer = ' '.join(newWordArray)
+        if not models.get(newManufacturer):
+            models[newManufacturer]=[{'name':newModel,'id':k}]
+        else:
+            models[newManufacturer].append({'name':newModel,'id':k})
+        k+=1
+
+with open("carModels.json", "w") as final:
+    json.dump(models, final)
+
+
+"""
 carManufacturers=cleanedCarDataFrame.manufacturer.unique()
 
+
+DataFrameArray=[]
+k=0
+for word in carManufacturers:
+    splitTemp = word.split(' ')
+    newWordArray=[]
+    for word in splitTemp:
+        if word!="":
+            newWordArray.append(word[0].upper()+word[1:])
+    DataFrameArray.append({
+        'name': ' '.join(newWordArray),
+        'id': k
+    })
+    k+=1
+with open("carManufacturers.json", "w") as final:
+    json.dump(DataFrameArray, final)
+
+
+  
+
 carModels=cleanedCarDataFrame.model.unique()
+
+DataFrameArray=[]
+k=0
+for word in carModels:
+    splitTemp = word.split(' ')
+    newWordArray=[]
+    for word in splitTemp:
+        if word!="":
+            newWordArray.append(word[0].upper()+word[1:])
+    DataFrameArray.append({
+        'name': ' '.join(newWordArray),
+        'id': k
+    })
+    k+=1
+with open("carModels.json", "w") as final:
+    json.dump(DataFrameArray, final)
+
+exit()
+
 
 carConditions = cleanedCarDataFrame.condition.unique()
 
 carCylinders = cleanedCarDataFrame.cylinders.unique()
 
+"""
+
+"""
 carFuelTypes = cleanedCarDataFrame.fuel.unique()
+
+
 
 carTitleStatus = cleanedCarDataFrame.title_status.unique()
 
+"""
+
+"""
 carTransmissionTypes = cleanedCarDataFrame.transmission.unique()
+print(carTransmissionTypes)
+
+exit()
+
+
 
 carDriveTypes = cleanedCarDataFrame.drive.unique()
+"""
 
+"""
 carTypes = cleanedCarDataFrame.type.unique()
 
+print(carTypes)
 
+"""
+
+
+
+
+"""
 
 
 cleanedCarDataFrame['Manufacturer Category'] = cleanedCarDataFrame['manufacturer'].replace(carManufacturers, [i for i in range(len(carManufacturers))])
@@ -80,4 +173,5 @@ cleanedCarDataFrame=cleanedCarDataFrame.dropna(subset=['neighbourhood','city','c
 
 cleanedCarDataFrame.to_csv('./Data/CleanedCarData.csv')
 
+"""
 

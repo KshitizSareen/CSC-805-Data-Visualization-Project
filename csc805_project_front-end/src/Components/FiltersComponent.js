@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
 
 export default function FiltersComponent({chartsDispatch}){
@@ -26,8 +27,7 @@ export default function FiltersComponent({chartsDispatch}){
             position: 'absolute',
             justifyContent: 'center',
             alignItems: 'center',
-            alignContent: 'center',
-            overflow: 'hidden'
+            overflow: 'hidden',
         }}>
                   <ButtonGroup style={{
                     marginBottom: '5%'
@@ -50,7 +50,7 @@ export default function FiltersComponent({chartsDispatch}){
       {
         radioValue === '1' ?
         <HomeFilters chartsDispatch={chartsDispatch}/> : 
-        ""
+        <CarFilters chartsDispatch={chartsDispatch}/>
       }
         </div>
     )

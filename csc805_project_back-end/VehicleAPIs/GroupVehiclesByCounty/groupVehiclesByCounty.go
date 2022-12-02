@@ -16,13 +16,25 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	json.Unmarshal([]byte(req.Body), &myRequest)
 
 	db, err := sql.Open("mysql", "root:Ks0756454835@tcp(csc805-datavis-project-database.cbwqxjvaa6sv.us-west-1.rds.amazonaws.com:3306)/DataVis_Project_Database")
+	defer db.Close()
+	queryString := fmt.Sprintf("CALL GroupVehiclesByCounty(%d,%d,%d,%d,%s,NULL,NULL,NULL,%s,NULL,NULL,NULL,%s,'%d','%d','%f','%f','%f','%f');", myRequest.MinPrice, myRequest.MaxPrice, myRequest.MinYear, myRequest.MaxYear, myRequest.Manufacturers, myRequest.FuelTypes, myRequest.VehicleTypes, myRequest.MinMileage, myRequest.MaxMileage, myRequest.MinLat, myRequest.MaxLat, myRequest.MinLong, myRequest.MaxLong)
+	query, err := db.Query(queryString)
+	var vehicleGroup VehicleStructs.VehicleGroup
+	var vehicleGroups []VehicleStructs.VehicleGroup
+	for query.Next() {
+		query.Scan(&vehicleGroup.AvgPrice, &vehicleGroup.MinPrice, &vehicleGroup.MaxPrice, &vehicleGroup.Count, &vehicleGroup.Category)
+		vehicleGroups = append(vehicleGroups, vehicleGroup)
+	}
+	defer query.Close()
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db.Close()
-	fmt.Println("Success!")
-
-	resp, err := json.Marshal(myRequest)
+	var resp []byte
+	if vehicleGroups == nil {
+		resp, err = json.Marshal(make([]VehicleStructs.VehicleGroup, 0, 0))
+	} else {
+		resp, err = json.Marshal(vehicleGroups)
+	}
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}

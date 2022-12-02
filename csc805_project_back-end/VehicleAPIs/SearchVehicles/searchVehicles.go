@@ -17,7 +17,7 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 
 	db, err := sql.Open("mysql", "root:Ks0756454835@tcp(csc805-datavis-project-database.cbwqxjvaa6sv.us-west-1.rds.amazonaws.com:3306)/DataVis_Project_Database")
 	defer db.Close()
-	queryString := fmt.Sprintf("CALL SearchVehicles(%d,%d,%d,%d,'%s',NULL,NULL,NULL,'%s',NULL,NULL,NULL,'%s','%d','%d','%f','%f','%f','%f');", myRequest.MinPrice, myRequest.MaxPrice, myRequest.MinYear, myRequest.MaxYear, myRequest.Manufacturers, myRequest.FuelTypes, myRequest.VehicleTypes, myRequest.MinMileage, myRequest.MaxMileage, myRequest.MinLat, myRequest.MaxLat, myRequest.MinLong, myRequest.MaxLong)
+	queryString := fmt.Sprintf("CALL SearchVehicles(%d,%d,%d,%d,%s,NULL,NULL,NULL,%s,NULL,NULL,NULL,%s,'%d','%d','%f','%f','%f','%f');", myRequest.MinPrice, myRequest.MaxPrice, myRequest.MinYear, myRequest.MaxYear, myRequest.Manufacturers, myRequest.FuelTypes, myRequest.VehicleTypes, myRequest.MinMileage, myRequest.MaxMileage, myRequest.MinLat, myRequest.MaxLat, myRequest.MinLong, myRequest.MaxLong)
 	query, err := db.Query(queryString)
 	var vehicle VehicleStructs.Vehicle
 	var vehicles []VehicleStructs.Vehicle

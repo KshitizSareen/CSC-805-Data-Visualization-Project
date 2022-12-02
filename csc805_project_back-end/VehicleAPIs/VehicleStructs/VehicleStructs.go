@@ -51,4 +51,9 @@ type Vehicle struct {
 }
 
 type VehicleGroup struct {
+	AvgPrice float64
+	MinPrice int
+	MaxPrice int
+	Count    int
+	Category string
 }

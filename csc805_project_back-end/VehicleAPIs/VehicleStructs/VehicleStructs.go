@@ -49,3 +49,6 @@ type Vehicle struct {
 	State                 string
 	Address               string
 }
+
+type VehicleGroup struct {
+}

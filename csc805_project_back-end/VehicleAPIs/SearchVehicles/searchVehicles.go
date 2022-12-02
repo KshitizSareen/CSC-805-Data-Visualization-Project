@@ -16,13 +16,25 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	json.Unmarshal([]byte(req.Body), &myRequest)
 
 	db, err := sql.Open("mysql", "root:Ks0756454835@tcp(csc805-datavis-project-database.cbwqxjvaa6sv.us-west-1.rds.amazonaws.com:3306)/DataVis_Project_Database")
+	defer db.Close()
+	queryString := fmt.Sprintf("CALL SearchVehicles(%d,%d,%d,%d,'%s',NULL,NULL,NULL,'%s',NULL,NULL,NULL,'%s','%d','%d','%f','%f','%f','%f');", myRequest.MinPrice, myRequest.MaxPrice, myRequest.MinYear, myRequest.MaxYear, myRequest.Manufacturers, myRequest.FuelTypes, myRequest.VehicleTypes, myRequest.MinMileage, myRequest.MaxMileage, myRequest.MinLat, myRequest.MaxLat, myRequest.MinLong, myRequest.MaxLong)
+	query, err := db.Query(queryString)
+	var vehicle VehicleStructs.Vehicle
+	var vehicles []VehicleStructs.Vehicle
+	for query.Next() {
+		query.Scan(&vehicle.Index, &vehicle.Price, &vehicle.Year, &vehicle.Manufacturer, &vehicle.Model, &vehicle.Condition, &vehicle.Cylinders, &vehicle.Fuel, &vehicle.Odometer, &vehicle.Title_Status, &vehicle.Transmission, &vehicle.Drive, &vehicle.Type, &vehicle.Image_URL, &vehicle.Description, &vehicle.Lat, &vehicle.Long, &vehicle.Manufacturer_Category, &vehicle.Model_Category, &vehicle.Condition_Category, &vehicle.Cylinders_Category, &vehicle.Fuel_Category, &vehicle.Title_Status_Category, &vehicle.Transmission_Category, &vehicle.Drive_Category, &vehicle.Type_Category, &vehicle.Neighbourhood, &vehicle.City, &vehicle.County, &vehicle.State, &vehicle.Address)
+		vehicles = append(vehicles, vehicle)
+	}
+	defer query.Close()
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db.Close()
-	fmt.Println("Success!")
-
-	resp, err := json.Marshal(myRequest)
+	var resp []byte
+	if vehicles == nil {
+		resp, err = json.Marshal(make([]VehicleStructs.Vehicle, 0, 0))
+	} else {
+		resp, err = json.Marshal(vehicles)
+	}
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}

@@ -10,12 +10,12 @@ type HouseFilters struct {
 	MaxBeds               int     `json:"maxBeds"`
 	MinBaths              int     `json:"minBaths"`
 	MaxBaths              int     `json:"maxBaths"`
-	CatsAllowed           int     `json:"catsAllowed"`
-	DogsAllowed           int     `json:"dogsAllowed"`
-	SmokingAllowed        int     `json:"smokingAllowed"`
-	WheelchairAccess      int     `json:"wheelchairAccess"`
-	ElectricVehicleCharge int     `json:"electricVehicleCharge"`
-	ComesFurnished        int     `json:"comesFurnished"`
+	CatsAllowed           string  `json:"catsAllowed"`
+	DogsAllowed           string  `json:"dogsAllowed"`
+	SmokingAllowed        string  `json:"smokingAllowed"`
+	WheelchairAccess      string  `json:"wheelchairAccess"`
+	ElectricVehicleCharge string  `json:"electricVehicleCharge"`
+	ComesFurnished        string  `json:"comesFurnished"`
 	MinLat                float64 `json:"minLat"`
 	MaxLat                float64 `json:"maxLat"`
 	MinLong               float64 `json:"minLong"`

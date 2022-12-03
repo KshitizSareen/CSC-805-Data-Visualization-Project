@@ -1,6 +1,7 @@
 package main
 
 import (
+	env "csc805_project_back-end/Env"
 	"csc805_project_back-end/HousingAPIs/Housingstructs"
 	"database/sql"
 	"encoding/json"
@@ -15,7 +16,7 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	var myRequest Housingstructs.HouseFilters
 	json.Unmarshal([]byte(req.Body), &myRequest)
 
-	db, err := sql.Open("mysql", "root:Ks0756454835@tcp(csc805-datavis-project-database.cbwqxjvaa6sv.us-west-1.rds.amazonaws.com:3306)/DataVis_Project_Database")
+	db, err := sql.Open("mysql", "root:"+env.DBPassword+"@tcp("+env.DBHost+")/"+env.DBName)
 	defer db.Close()
 	queryString := fmt.Sprintf("CALL GroupHousesByNeighborhood(%d,%d,%s, %d, %d, %d, %d,%d, %d,%s,%s, %s, %s, %s, %s, %f, %f,%f, %f);",
 		myRequest.MinPrice, myRequest.MaxPrice, myRequest.HousingTypes, myRequest.MinSqFeet, myRequest.MaxSqFeet, myRequest.MinBeds, myRequest.MaxBeds,

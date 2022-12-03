@@ -1,6 +1,7 @@
 package main
 
 import (
+	env "csc805_project_back-end/Env"
 	"csc805_project_back-end/VehicleAPIs/VehicleStructs"
 	"database/sql"
 	"encoding/json"
@@ -15,7 +16,7 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	var myRequest VehicleStructs.VehicleFilters
 	json.Unmarshal([]byte(req.Body), &myRequest)
 
-	db, err := sql.Open("mysql", "root:Ks0756454835@tcp(csc805-datavis-project-database.cbwqxjvaa6sv.us-west-1.rds.amazonaws.com:3306)/DataVis_Project_Database")
+	db, err := sql.Open("mysql", "root:"+env.DBPassword+"@tcp("+env.DBHost+")/"+env.DBName)
 	defer db.Close()
 	queryString := fmt.Sprintf("CALL SearchVehicles(%d,%d,%d,%d,%s,NULL,NULL,NULL,%s,NULL,NULL,NULL,%s,'%d','%d','%f','%f','%f','%f');", myRequest.MinPrice, myRequest.MaxPrice, myRequest.MinYear, myRequest.MaxYear, myRequest.Manufacturers, myRequest.FuelTypes, myRequest.VehicleTypes, myRequest.MinMileage, myRequest.MaxMileage, myRequest.MinLat, myRequest.MaxLat, myRequest.MinLong, myRequest.MaxLong)
 	query, err := db.Query(queryString)

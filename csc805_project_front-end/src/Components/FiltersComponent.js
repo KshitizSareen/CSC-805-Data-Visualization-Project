@@ -4,7 +4,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
 
-export default function FiltersComponent({chartsDispatch}){
+export default function FiltersComponent({mapState,chartsDispatch,resultsDispatch}){
 
     const [radioValue, setRadioValue] = useState('1');
 
@@ -49,8 +49,8 @@ export default function FiltersComponent({chartsDispatch}){
       </ButtonGroup>
       {
         radioValue === '1' ?
-        <HomeFilters chartsDispatch={chartsDispatch}/> : 
-        <CarFilters chartsDispatch={chartsDispatch}/>
+        <HomeFilters chartsDispatch={chartsDispatch} mapState={mapState} resultsDispatch={resultsDispatch}/> : 
+        <CarFilters chartsDispatch={chartsDispatch} mapState={mapState} resultsDispatch={resultsDispatch}/>
       }
         </div>
     )

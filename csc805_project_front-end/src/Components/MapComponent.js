@@ -3,17 +3,17 @@ import DeckGL from "deck.gl";
 import { Map } from "react-map-gl";
 import {IconLayer} from '@deck.gl/layers';
 import {WebMercatorViewport} from '@deck.gl/core';
+import axios from 'axios';
 
 
-const statesGeoJSONData = require("../Data/usa_state_long_lat.json");
 const ICON_MAPPING = {
     marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
   };
 
-export default function MapComponent()
+export default function MapComponent({resultsState,mapDispatch,resultsDispatch})
 {
 
-
+  const [preLoad,setPreload] = useState(true)
     const viewState = {
 
         latitude: 37.0902,
@@ -23,14 +23,14 @@ export default function MapComponent()
         pitch: 0,
     }
 
-  const stateLayers = [
+  const homeLayers = [
     // only needed when using shadows - a plane for shadows to drop on
     new IconLayer(
       {
-      id: 'icon-layer-states',
-      data: statesGeoJSONData,
+      id: 'icon-layer',
+      data: resultsState,
       pickable: true,
-      getPosition: d => [d.longitude,d.latitude],
+      getPosition: d => [d.Long,d.Lat],
       iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
       iconMapping: ICON_MAPPING,
       getIcon: d => 'marker',
@@ -44,29 +44,55 @@ export default function MapComponent()
     )
   ];
 
-    const [currentLayer,setLayer]=useState(
-        stateLayers
-      )
     return(
         <DeckGL
-        layers={currentLayer}
+        layers={homeLayers}
          initialViewState={viewState}
          height={window.parent.innerHeight}
          width={0.7*window.parent.innerWidth}
          controller={true}// allows the user to move the map around
-         getTooltip={({object}) => object && `${object.state ? object.state : object.name ? object.name : object.city}\n${1932}`} 
+         getTooltip={({object}) => object ? object.Address ? object.Address : object.state ? object.state : null : null} 
          onViewStateChange={({viewState})=>{
           const viewport = new WebMercatorViewport(viewState);
-          console.log(viewport.unproject([0,0]));
-          console.log(viewport.unproject([viewState.width,viewState.height]));
-          if(viewState.zoom<=5)
+          let topLeft=viewport.unproject([0,0]);
+          let bottomRight = viewport.unproject([viewState.width,viewState.height]);
+          mapDispatch({
+            type:'changeMapState',
+            zoom: viewState.zoom,
+            minLat: bottomRight[1],
+            maxLat: topLeft[1],
+            minLong: topLeft[0],
+            maxLong: bottomRight[0]
+          })
+          if(preLoad)
           {
-            setLayer(stateLayers);
-          }
-          else
-          {
-            setLayer([]);
-          }
+          axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/search-houses",{
+    "housingTypes": "".length === 0 ? "NULL" : "",
+    "minPrice": 500,
+    "maxPrice": 1000,
+    "minSqFeet": 500,
+    "maxSqFeet": 1000,
+    "minBeds": 2,
+    "maxBeds": 3,
+    "minBaths": 2,
+    "maxBaths": 3,
+    "catsAllowed": "NULL",
+    "dogsAllowed": "NULL",
+    "smokingAllowed": "NULL",
+    "wheelchairAccess": "NULL",
+    "electricVehicleCharge": "NULL",
+    "comesFurnished": "NULL",
+    "minLat": bottomRight[1],
+    "maxLat": topLeft[1],
+    "minLong": topLeft[0],
+    "maxLong": bottomRight[0]
+  }).then(res=>{
+    resultsDispatch({
+      type: 'changeResultsState', results: res.data
+    })
+  })
+  setPreload(false)
+}
          }}
          style={{
           position: 'absolute'

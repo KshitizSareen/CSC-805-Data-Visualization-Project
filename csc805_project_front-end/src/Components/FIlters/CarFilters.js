@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useState } from 'react';
+import axios from 'axios';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -13,8 +14,33 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const Manufacturers= require('../../Data/carManufacturers.json');
 
+const fuelTypes=[['Gas','Diesel','Hybrid'],['Electric','Other']]
+const fuelValues={
+  'Gas': false,
+  'Diesel': false,
+  'Hybrid': false,
+  'Electric': false,
+  'Other': false
+}
+const vehicleTypes=[['Truck','Pickup','Bus','Coupe','Mini-van'],['SUV','Sedan','Offroad','Van','Convertible'],['Hatchback','Wagon','Other']]
+const vehicleValues={
+  'Truck': false,
+  'Pickup': false,
+  'Bus': false,
+  'Coupe': false,
+  'Mini-van': false,
+  'SUV': false,
+  'Sedan': false,
+  'Offroad': false,
+  'Van': false,
+  'Convertible': false,
+  'Hatchback': false,
+  'Wagon': false,
+  'Other': false
+}
 
-export default function CarFilters({chartsDispatch})
+
+export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
 {
     const [minPrice,setMinPrice]=useState(0);
     const [maxPrice,setMaxPrice]=useState(100000);
@@ -23,30 +49,6 @@ export default function CarFilters({chartsDispatch})
     const [minMileage,setMinMileage]=useState(0);
     const [maxMileage,setMaxMileage]=useState(100000);
     const [selectedManufacturers,setSelectedManufacturers]=useState([]);
-    const fuelTypes=[['Gas','Diesel','Hybrid'],['Electric','Other']]
-    const fuelValues={
-      'Gas': false,
-      'Diesel': false,
-      'Hybrid': false,
-      'Electric': false,
-      'Other': false
-    }
-    const vehicleTypes=[['Truck','Pickup','Bus','Coupe','Mini-van'],['SUV','Sedan','Offroad','Van','Convertible'],['Hatchback','Wagon','Other']]
-    const vehicleValues={
-      'Truck': false,
-      'Pickup': false,
-      'Bus': false,
-      'Coupe': false,
-      'Mini-van': false,
-      'SUV': false,
-      'Sedan': false,
-      'Offroad': false,
-      'Van': false,
-      'Convertible': false,
-      'Hatchback': false,
-      'Wagon': false,
-      'Other': false
-    }
 
     function getFuelTypes(){
       let fuelTypeArray=[];
@@ -137,6 +139,104 @@ export default function CarFilters({chartsDispatch})
     {
       return selectedManufacturers.map(manufacturer=>manufacturer.id).join(',');
 
+    }
+
+    function searchVehicles()
+    {
+      const fuels = getFuelTypes();
+      const types = getVehicleTypes();
+      const manufacturers = getManufacturers();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/search-vehicles",{
+        "manufacturers": manufacturers.length === 0 ?  "NULL" : "'"+manufacturers+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minYear": minYear,
+        "maxYear": maxYear,
+        "minMileage": minMileage,
+        "maxMileage": maxMileage,
+        "fuelTypes": fuels.length === 0 ?  "NULL" : "'"+fuels+"'",
+        "vehicleTypes": types.length === 0 ?  "NULL" : "'"+types+"'",
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        console.log(res.data);
+        resultsDispatch({
+          type: 'changeResultsState', results: res.data
+        })
+      }).catch(()=>{
+        alert("Please Narrow Down Your Search")
+      })
+    }
+
+    function groupVehiclesByLocation(location){
+      const fuels = getFuelTypes();
+      const types = getVehicleTypes();
+      const manufacturers = getManufacturers();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/group-vehicles-by-"+location,{
+        "manufacturers": manufacturers.length === 0 ?  "NULL" : "'"+manufacturers+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minYear": minYear,
+        "maxYear": maxYear,
+        "minMileage": minMileage,
+        "maxMileage": maxMileage,
+        "fuelTypes": fuels.length === 0 ?  "NULL" : "'"+fuels+"'",
+        "vehicleTypes": types.length === 0 ?  "NULL" : "'"+types+"'",
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        console.log(res.data);
+      }).catch(()=>{
+      })
+    }
+
+    function groupVehiclesByManufacturer()
+    {
+      const fuels = getFuelTypes();
+      const types = getVehicleTypes();
+      const manufacturers = getManufacturers();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/group-vehicles-by-manufacturer",{
+        "manufacturers": manufacturers.length === 0 ?  "NULL" : "'"+manufacturers+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minYear": minYear,
+        "maxYear": maxYear,
+        "minMileage": minMileage,
+        "maxMileage": maxMileage,
+        "fuelTypes": fuels.length === 0 ?  "NULL" : "'"+fuels+"'",
+        "vehicleTypes": types.length === 0 ?  "NULL" : "'"+types+"'",
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        console.log(res.data);
+      }).catch(()=>{
+      })
+    }
+
+    function groupVehicles(){
+      if(mapState.zoom<=5)
+      {
+        groupVehiclesByLocation("state");
+      }
+      else if(mapState.zoom<=7)
+      {
+        groupVehiclesByLocation("county");
+      }
+      else if(mapState.zoom<=9.5)
+      {
+        groupVehiclesByLocation("city");
+      }
+      else
+      {
+        groupVehiclesByLocation("neighbourhood");
+      }
+      groupVehiclesByManufacturer();
     }
     return(
         <div style={{
@@ -399,17 +499,17 @@ export default function CarFilters({chartsDispatch})
                   chartsDispatch({
                     type: 'changeChartText'
                   })*/
-                  const fuelTypes = getFuelTypes();
-                  const vehicleTypes = getVehicleTypes();
-                  const manufacturers = getManufacturers();
+                  searchVehicles();
                 }} >
                     Search Cars
                 </Button>
                 <Button as="a" variant="primary" onClick={()=>{
-                  window.scrollTo(window.parent.innerWidth,0)
+                  groupVehicles();
+                  /*window.scrollTo(window.parent.innerWidth,0)
                   chartsDispatch({
                     type: 'changeChartText'
                   })
+                  */
                 }} >
                     Visualize Charts
                 </Button>

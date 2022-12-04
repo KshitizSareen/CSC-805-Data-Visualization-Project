@@ -1,43 +1,45 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
+import axios from 'axios';
 
-export default function HomeFilters({chartsDispatch})
+const HousingTypesArray=[['Apartment','Condo','Manufactured','Duplex'],['Townhouse','Loft','House','Cottage/Cabin'],['Flat','In-law','Land','Assisted Living']]
+const HousingTypeValues={
+  'Apartment': false,
+  'Condo': false,
+  'Manufactured': false,
+  'Duplex': false,
+  'Townhouse': false,
+  'Loft': false,
+  'House': false,
+  'Cottage/Cabin': false,
+  'Flat': false,
+  'In-law': false,
+  'Land': false,
+  'Assisted Living': false,
+}
+const booleanFilters=[["Cats Allowed","Dogs Allowed","Smoking Allowed"],["Wheelchair Access","Electric Vehicle Charge","Comes Furnished"]]
+const booleanFilterValues={
+  'Cats Allowed': "NULL",
+  'Dogs Allowed': "NULL",
+  'Smoking Allowed': "NULL",
+  'Wheelchair Access': "NULL",
+  'Electric Vehicle Charge': "NULL",
+  'Comes Furnished': "NULL",
+}
+
+export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
 {
 
-    const HousingTypesArray=[['Apartment','Condo','Manufactured','Duplex'],['Townhouse','Loft','House','Cottage/Cabin'],['Flat','In-law','Land','Assisted Living']]
-    const HousingTypeValues={
-      'Apartment': false,
-      'Condo': false,
-      'Manufactured': false,
-      'Duplex': false,
-      'Townhouse': false,
-      'Loft': false,
-      'House': false,
-      'Cottage/Cabin': false,
-      'Flat': false,
-      'In-law': false,
-      'Land': false,
-      'Assisted Living': false,
-    }
-    const booleanFilters=[["Cats Allowed","Dogs Allowed","Smoking Allowed"],["Wheelchair Access","Electric Vehicle Charge","Comes Furnished"]]
-    const booleanFilterValues={
-      'Cats Allowed': '0',
-      'Dogs Allowed': '0',
-      'Smoking Allowed': '0',
-      'Wheelchair Access': '0',
-      'Electric Vehicle Charge': '0',
-      'Comes Furnished': '0',
-    }
+    const [minPrice,setMinPrice]=useState(500);
+    const [maxPrice,setMaxPrice]=useState(1000);
+    const [minSquareFeet,setMinSquareFeet]=useState(500);
+    const [maxSquareFeet,setMaxSquareFeet]=useState(1000);
+    const [minBeds,setMinBeds]=useState(2);
+    const [maxBeds,setMaxBeds]=useState(3);
+    const [minBaths,setMinBaths]=useState(2);
+    const [maxBaths,setMaxBaths]=useState(3);
 
-    const [minPrice,setMinPrice]=useState(0);
-    const [maxPrice,setMaxPrice]=useState(100000);
-    const [minSquareFeet,setMinSquareFeet]=useState(0);
-    const [maxSquareFeet,setMaxSquareFeet]=useState(100000);
-    const [minBeds,setMinBeds]=useState(0);
-    const [maxBeds,setMaxBeds]=useState(5);
-    const [minBaths,setMinBaths]=useState(0);
-    const [maxBaths,setMaxBaths]=useState(5);
 
     function getHousingTypes(){
       let HousingTypeArray=[];
@@ -92,6 +94,124 @@ export default function HomeFilters({chartsDispatch})
 
       const housing = HousingTypeArray.join(',')
       return housing;
+    }
+
+    function searchHousing()
+    {
+      const housing = getHousingTypes();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/search-houses",{
+        "housingTypes": housing.length === 0 ? "NULL" : "'"+housing+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minSqFeet": minSquareFeet,
+        "maxSqFeet": maxSquareFeet,
+        "minBeds": minBeds,
+        "maxBeds": maxBeds,
+        "minBaths": minBaths,
+        "maxBaths": maxBaths,
+        "catsAllowed": booleanFilterValues['Cats Allowed'],
+        "dogsAllowed": booleanFilterValues['Dogs Allowed'],
+        "smokingAllowed": booleanFilterValues['Smoking Allowed'],
+        "wheelchairAccess": booleanFilterValues['Wheelchair Access'],
+        "electricVehicleCharge": booleanFilterValues['Electric Vehicle Charge'],
+        "comesFurnished": booleanFilterValues['Comes Furnished'],
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        console.log(res.data);
+        resultsDispatch({
+          type: 'changeResultsState', results: res.data
+        })
+      }).catch(()=>{
+        alert("Please Narrow Down Your Search")
+      })
+    }
+
+    function groupHousesByLocation(location){
+      const housing = getHousingTypes();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/group-houses-by-"+location,{
+        "housingTypes": housing.length === 0 ? "NULL" : "'"+housing+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minSqFeet": minSquareFeet,
+        "maxSqFeet": maxSquareFeet,
+        "minBeds": minBeds,
+        "maxBeds": maxBeds,
+        "minBaths": minBaths,
+        "maxBaths": maxBaths,
+        "catsAllowed": booleanFilterValues['Cats Allowed'],
+        "dogsAllowed": booleanFilterValues['Dogs Allowed'],
+        "smokingAllowed": booleanFilterValues['Smoking Allowed'],
+        "wheelchairAccess": booleanFilterValues['Wheelchair Access'],
+        "electricVehicleCharge": booleanFilterValues['Electric Vehicle Charge'],
+        "comesFurnished": booleanFilterValues['Comes Furnished'],
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        console.log(res.data);
+        /*homesDispatch({
+          type: 'changeHomesState', homes: res.data
+        })*/
+      }).catch(()=>{
+        alert("Please Narrow Down Your Search")
+      })
+    }
+
+    function groupHousesByType()
+    {
+      const housing = getHousingTypes();
+      axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/group-houses-by-type",{
+        "housingTypes": housing.length === 0 ? "NULL" : "'"+housing+"'",
+        "minPrice": minPrice,
+        "maxPrice": maxPrice,
+        "minSqFeet": minSquareFeet,
+        "maxSqFeet": maxSquareFeet,
+        "minBeds": minBeds,
+        "maxBeds": maxBeds,
+        "minBaths": minBaths,
+        "maxBaths": maxBaths,
+        "catsAllowed": booleanFilterValues['Cats Allowed'],
+        "dogsAllowed": booleanFilterValues['Dogs Allowed'],
+        "smokingAllowed": booleanFilterValues['Smoking Allowed'],
+        "wheelchairAccess": booleanFilterValues['Wheelchair Access'],
+        "electricVehicleCharge": booleanFilterValues['Electric Vehicle Charge'],
+        "comesFurnished": booleanFilterValues['Comes Furnished'],
+        "minLat": mapState.minLat,
+        "maxLat": mapState.maxLat,
+        "minLong": mapState.minLong,
+        "maxLong": mapState.maxLong
+      }).then(res=>{
+        //console.log(res.data);
+        /*homesDispatch({
+          type: 'changeHomesState', homes: res.data
+        })*/
+      }).catch(()=>{
+        alert("Please Narrow Down Your Search")
+      })
+    }
+
+    function groupHousing(){
+      if(mapState.zoom<=5)
+      {
+        groupHousesByLocation("state");
+      }
+      else if(mapState.zoom<=7)
+      {
+        groupHousesByLocation("county");
+      }
+      else if(mapState.zoom<=9.5)
+      {
+        groupHousesByLocation("city");
+      }
+      else
+      {
+        groupHousesByLocation("neighbourhood");
+      }
+      groupHousesByType();
     }
     
 
@@ -324,15 +444,17 @@ export default function HomeFilters({chartsDispatch})
                         label={type}
                         name="group1"
                         type={"checkbox"}
+                        defaultChecked
                         onChange={(event)=>{
                           if(event.target.checked)
                           {
-                          booleanFilterValues[type] = '1';
+                          booleanFilterValues[type] = "NULL";
                           }
                           else
                           {
-                          booleanFilterValues[type] = '0';
+                          booleanFilterValues[type] = "0";
                           }
+                          console.log(booleanFilterValues[type])
                         }}
                       />
                       )
@@ -346,8 +468,11 @@ export default function HomeFilters({chartsDispatch})
         <Button style={{
           alignSelf: 'center'
         }} as="a" variant="primary" onClick={()=>{
-          const housing = getHousingTypes()
-                  /*window.scrollTo(0,window.parent.innerHeight)
+          console.log(mapState)
+          const housing = getHousingTypes();
+          console.log(housing)
+          searchHousing()
+          /*window.scrollTo(0,window.parent.innerHeight)
                   chartsDispatch({
                     type: 'changeChartText'
                   })*/
@@ -356,10 +481,11 @@ export default function HomeFilters({chartsDispatch})
                     Search Homes
                 </Button>
                 <Button as="a" variant="primary" onClick={()=>{
-                  window.scrollTo(window.parent.innerWidth,0)
+                    /*window.scrollTo(window.parent.innerWidth,0)
                   chartsDispatch({
                     type: 'changeChartText'
-                  })
+                  })*/
+                  groupHousing()
                 }} >
                     Visualize Charts
                 </Button>

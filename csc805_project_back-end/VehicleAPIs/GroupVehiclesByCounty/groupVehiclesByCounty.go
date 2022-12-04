@@ -39,7 +39,11 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	if err != nil {
 		return events.APIGatewayProxyResponse{}, err
 	}
-	return events.APIGatewayProxyResponse{Body: string(resp), StatusCode: 200}, nil
+	var HeaderBody map[string]string = make(map[string]string)
+	HeaderBody["Access-Control-Allow-Headers"] = "Content-Type"
+	HeaderBody["Access-Control-Allow-Origin"] = "*"
+	HeaderBody["Access-Control-Allow-Methods"] = "OPTIONS,POST,GET,ANY"
+	return events.APIGatewayProxyResponse{Body: string(resp), Headers: HeaderBody, StatusCode: 200}, nil
 
 }
 

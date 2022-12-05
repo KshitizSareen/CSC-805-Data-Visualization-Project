@@ -1,16 +1,9 @@
-export const initialChartsState ={
-    chartsText: "Charts Default Text"
-}
-
 export function ChartsReducer(state, action) {
     // The reducer normally looks at the action type field to decide what happens
     switch (action.type) {
       // Do something here based on the different types of actions
-      case 'changeChartText': {
-        return {
-            ...state,
-            chartsText: "New Charts Default Text"
-        }
+      case 'changeChartsState': {
+        return action.newData
       }
 
       default:
@@ -18,4 +11,4 @@ export function ChartsReducer(state, action) {
         // care about this specific action, return the existing state unchanged
         return state
     }
-  }
+}

@@ -40,7 +40,7 @@ const vehicleValues={
 }
 
 
-export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
+export default function CarFilters({chartsLocationDispatch,chartsCategoryDispatch,mapState,resultsDispatch,chartsListingDispatch})
 {
     const [minPrice,setMinPrice]=useState(0);
     const [maxPrice,setMaxPrice]=useState(100000);
@@ -141,7 +141,7 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
 
     }
 
-    function searchVehicles()
+    function searchVehicles(dispatchFunction)
     {
       const fuels = getFuelTypes();
       const types = getVehicleTypes();
@@ -161,8 +161,7 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
         "minLong": mapState.minLong,
         "maxLong": mapState.maxLong
       }).then(res=>{
-        console.log(res.data);
-        resultsDispatch({
+        dispatchFunction({
           type: 'changeResultsState', results: res.data
         })
       }).catch(()=>{
@@ -189,7 +188,9 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
         "minLong": mapState.minLong,
         "maxLong": mapState.maxLong
       }).then(res=>{
-        console.log(res.data);
+        chartsLocationDispatch({
+          type: 'changeChartsState', newData: res.data
+        })
       }).catch(()=>{
       })
     }
@@ -214,7 +215,9 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
         "minLong": mapState.minLong,
         "maxLong": mapState.maxLong
       }).then(res=>{
-        console.log(res.data);
+        chartsCategoryDispatch({
+          type: 'changeChartsState', newData: res.data
+        })
       }).catch(()=>{
       })
     }
@@ -237,6 +240,7 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
         groupVehiclesByLocation("neighbourhood");
       }
       groupVehiclesByManufacturer();
+      searchVehicles(chartsListingDispatch)
     }
     return(
         <div style={{
@@ -499,17 +503,17 @@ export default function CarFilters({chartsDispatch,mapState,resultsDispatch})
                   chartsDispatch({
                     type: 'changeChartText'
                   })*/
-                  searchVehicles();
+                  searchVehicles(resultsDispatch);
                 }} >
                     Search Cars
                 </Button>
                 <Button as="a" variant="primary" onClick={()=>{
-                  groupVehicles();
-                  /*window.scrollTo(window.parent.innerWidth,0)
-                  chartsDispatch({
-                    type: 'changeChartText'
+                  window.scrollTo({
+                    top: 0,
+                    left: window.parent.innerWidth,
+                    behavior: 'auto'
                   })
-                  */
+                  groupVehicles();
                 }} >
                     Visualize Charts
                 </Button>

@@ -28,7 +28,7 @@ const booleanFilterValues={
   'Comes Furnished': "NULL",
 }
 
-export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
+export default function HomeFilters({chartsLocationDispatch,chartsCategoryDispatch,mapState,resultsDispatch,chartsListingDispatch})
 {
 
     const [minPrice,setMinPrice]=useState(500);
@@ -96,7 +96,7 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
       return housing;
     }
 
-    function searchHousing()
+    function searchHousing(dispatchFunction)
     {
       const housing = getHousingTypes();
       axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/search-houses",{
@@ -121,7 +121,8 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
         "maxLong": mapState.maxLong
       }).then(res=>{
         console.log(res.data);
-        resultsDispatch({
+
+        dispatchFunction({
           type: 'changeResultsState', results: res.data
         })
       }).catch(()=>{
@@ -152,10 +153,9 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
         "minLong": mapState.minLong,
         "maxLong": mapState.maxLong
       }).then(res=>{
-        console.log(res.data);
-        /*homesDispatch({
-          type: 'changeHomesState', homes: res.data
-        })*/
+        chartsLocationDispatch({
+          type: 'changeChartsState', newData: res.data
+        })
       }).catch(()=>{
         alert("Please Narrow Down Your Search")
       })
@@ -185,10 +185,9 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
         "minLong": mapState.minLong,
         "maxLong": mapState.maxLong
       }).then(res=>{
-        //console.log(res.data);
-        /*homesDispatch({
-          type: 'changeHomesState', homes: res.data
-        })*/
+        chartsCategoryDispatch({
+          type: 'changeChartsState', newData: res.data
+        })
       }).catch(()=>{
         alert("Please Narrow Down Your Search")
       })
@@ -212,6 +211,8 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
         groupHousesByLocation("neighbourhood");
       }
       groupHousesByType();
+      searchHousing(chartsListingDispatch)
+      console.log(chartsListingDispatch)
     }
     
 
@@ -469,22 +470,17 @@ export default function HomeFilters({chartsDispatch,mapState,resultsDispatch})
           alignSelf: 'center'
         }} as="a" variant="primary" onClick={()=>{
           console.log(mapState)
-          const housing = getHousingTypes();
-          console.log(housing)
-          searchHousing()
-          /*window.scrollTo(0,window.parent.innerHeight)
-                  chartsDispatch({
-                    type: 'changeChartText'
-                  })*/
+          searchHousing(resultsDispatch)
 
                 }} >
                     Search Homes
                 </Button>
                 <Button as="a" variant="primary" onClick={()=>{
-                    /*window.scrollTo(window.parent.innerWidth,0)
-                  chartsDispatch({
-                    type: 'changeChartText'
-                  })*/
+                  window.scrollTo({
+                    top: 0,
+                    left: window.parent.innerWidth,
+                    behavior: 'auto'
+                  })
                   groupHousing()
                 }} >
                     Visualize Charts

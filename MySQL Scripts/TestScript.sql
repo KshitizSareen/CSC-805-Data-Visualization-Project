@@ -30,9 +30,12 @@ CALL `DataVis_Project_Database`.`GroupVehiclesByNeighborhood`(0, 2147483647,0, 2
  NULL,NULL, NULL, NULL, NULL, NULL, NULL,NULL, 0, 2147483647, NULL,NULL,NULL);
  */
  
+ /*
 CALL `DataVis_Project_Database`.`SearchHouses`(0, 2147483647,'0', 0, 2147483647, 0, 2147483647,0, 2147483647,
  NULL,NULL, NULL, NULL, NULL, NULL, 0, 35,-120, -118);
+ */
  
+ /*
 CALL `DataVis_Project_Database`.`GroupHousesByType`(0, 2147483647,'0,3,6', 0, 2147483647, 0, 2147483647,0, 2147483647,
  NULL,NULL, NULL, NULL, NULL, NULL, 0, 35,-120, -118);
  
@@ -44,4 +47,14 @@ CALL `DataVis_Project_Database`.`GroupVehiclesByCity`(0, 2147483647,0, 214748364
  
  CALL `DataVis_Project_Database`.`GroupVehiclesByManufacturer`(0, 2147483647,0, 2147483647,'38,0,39,1', 
  NULL,NULL, NULL, NULL, NULL, NULL, NULL,NULL, 0, 2147483647, 0, 35,-120, -118);
+ */
+ 
+/*
+ CALL `DataVis_Project_Database`.`GroupHousesByType`(0, 2147483647,NULL, 0, 2147483647, 0, 2147483647,0, 2147483647,
+ NULL,NULL, NULL, NULL, NULL, NULL, -100, 100,-130, 120);
+ */
+ 
+ CALL `DataVis_Project_Database`.`GroupVehiclesByNeighborhood`(0, 2147483647,0, 2147483647, NULL, 
+ NULL,NULL, '0,2', NULL, NULL, NULL, NULL,NULL, '0', '2147483647', '0', '35','-120', '-115')
+ 
  

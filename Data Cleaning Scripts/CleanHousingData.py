@@ -31,19 +31,49 @@ addresses=[]
 for ind in cleanedHousingDataFrame.index:
     address = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+str(cleanedHousingDataFrame['lat'][ind])+','+str(cleanedHousingDataFrame['long'][ind])+'+&key=AIzaSyBrJrhdPowQtFEeLiX_cdXjc8E9C4IVtyw')
     jsonAddress=address.json()
-    if len(jsonAddress["results"])>0 and len(jsonAddress["results"][0]["address_components"])>5:
-        addresses.append(jsonAddress["results"][0]["formatted_address"])
-        neighbourhoods.append(jsonAddress["results"][0]["address_components"][2]["long_name"])
-        cities.append(jsonAddress["results"][0]["address_components"][3]["long_name"])
-        counties.append(jsonAddress["results"][0]["address_components"][4]["long_name"])
-        states.append(jsonAddress["results"][0]["address_components"][5]["long_name"])
+    if len(jsonAddress["results"])>0:
+        addressComponents=jsonAddress["results"][0]["address_components"]
+        foundNeighbourhood=False
+        foundNeighbourhoodIndex=0
+        foundCity=False
+        foundCityIndex=0
+        foundCounty=False
+        foundCountyIndex=0
+        foundState=False
+        foundStateIndex=0
+        for i in range(len(addressComponents)):
+            if addressComponents[i]['types'][0]=='locality':
+                foundCity=True
+                foundCityIndex=i
+                if i-1>=0:
+                    foundNeighbourhood=True
+                    foundNeighbourhoodIndex=i-1
+            if addressComponents[i]['types'][0]=='administrative_area_level_2':
+                foundCounty=True
+                foundCountyIndex=i
+            if addressComponents[i]['types'][0]=='administrative_area_level_1':
+                foundState=True
+                foundStateIndex=i
+        
+        if foundNeighbourhood and foundCity and foundCounty and foundState:
+            neighbourhoods.append(addressComponents[foundNeighbourhoodIndex]["long_name"])
+            cities.append(addressComponents[foundCityIndex]["long_name"])
+            counties.append(addressComponents[foundCountyIndex]["long_name"])
+            states.append(addressComponents[foundStateIndex]["long_name"])
+            addresses.append(jsonAddress["results"][0]["formatted_address"])
+        else:
+            addresses.append(None)
+            neighbourhoods.append(None)
+            cities.append(None)
+            counties.append(None)
+            states.append(None)
     else:
         addresses.append(None)
         neighbourhoods.append(None)
         cities.append(None)
         counties.append(None)
         states.append(None)
-    print(addresses[-1])
+    
 
 cleanedHousingDataFrame['neighbourhood'] = neighbourhoods
 cleanedHousingDataFrame['city'] = cities

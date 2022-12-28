@@ -21,6 +21,7 @@ mycursor = conn.cursor()
 def isNaN(num):
     return num != num
 
+
 k=1
 for ind in housingData.index:
     values=()

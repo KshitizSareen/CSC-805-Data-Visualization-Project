@@ -1,12 +1,10 @@
 import pandas as pd
-import json
+import requests
 carDataFrame=pd.read_csv("./Data/vehicles.csv")
 
 cleanedCarDataFrame = carDataFrame.dropna(subset=['id', 'url','price','year','manufacturer','model','condition','cylinders','fuel','odometer','title_status','transmission','drive','type','image_url', 'lat','long']).drop(columns=['id','url','region','region_url', 'state','VIN','county','posting_date','size','paint_color'])
 
-
-carModels=cleanedCarDataFrame.model.unique()
-
+"""
 modelsSet={}
 models={}
 k=0
@@ -35,12 +33,14 @@ for ind in cleanedCarDataFrame.index:
 
 with open("carModels.json", "w") as final:
     json.dump(models, final)
-
-
 """
+
+
+carModels=cleanedCarDataFrame.model.unique()
+
 carManufacturers=cleanedCarDataFrame.manufacturer.unique()
 
-
+"""
 DataFrameArray=[]
 k=0
 for word in carManufacturers:
@@ -57,10 +57,6 @@ for word in carManufacturers:
 with open("carManufacturers.json", "w") as final:
     json.dump(DataFrameArray, final)
 
-
-  
-
-carModels=cleanedCarDataFrame.model.unique()
 
 DataFrameArray=[]
 k=0
@@ -80,44 +76,27 @@ with open("carModels.json", "w") as final:
 
 exit()
 
+"""
+
 
 carConditions = cleanedCarDataFrame.condition.unique()
 
 carCylinders = cleanedCarDataFrame.cylinders.unique()
 
-"""
-
-"""
 carFuelTypes = cleanedCarDataFrame.fuel.unique()
-
-
 
 carTitleStatus = cleanedCarDataFrame.title_status.unique()
 
-"""
-
-"""
 carTransmissionTypes = cleanedCarDataFrame.transmission.unique()
-print(carTransmissionTypes)
-
-exit()
-
-
 
 carDriveTypes = cleanedCarDataFrame.drive.unique()
-"""
 
-"""
 carTypes = cleanedCarDataFrame.type.unique()
 
-print(carTypes)
-
-"""
 
 
 
 
-"""
 
 
 cleanedCarDataFrame['Manufacturer Category'] = cleanedCarDataFrame['manufacturer'].replace(carManufacturers, [i for i in range(len(carManufacturers))])
@@ -149,19 +128,49 @@ addresses=[]
 for ind in cleanedCarDataFrame.index:
     address = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+str(cleanedCarDataFrame['lat'][ind])+','+str(cleanedCarDataFrame['long'][ind])+'+&key=AIzaSyBrJrhdPowQtFEeLiX_cdXjc8E9C4IVtyw')
     jsonAddress=address.json()
-    if len(jsonAddress["results"])>0 and len(jsonAddress["results"][0]["address_components"])>5:
-        addresses.append(jsonAddress["results"][0]["formatted_address"])
-        neighbourhoods.append(jsonAddress["results"][0]["address_components"][2]["long_name"])
-        cities.append(jsonAddress["results"][0]["address_components"][3]["long_name"])
-        counties.append(jsonAddress["results"][0]["address_components"][4]["long_name"])
-        states.append(jsonAddress["results"][0]["address_components"][5]["long_name"])
+    if len(jsonAddress["results"])>0:
+        addressComponents=jsonAddress["results"][0]["address_components"]
+        foundNeighbourhood=False
+        foundNeighbourhoodIndex=0
+        foundCity=False
+        foundCityIndex=0
+        foundCounty=False
+        foundCountyIndex=0
+        foundState=False
+        foundStateIndex=0
+        for i in range(len(addressComponents)):
+            if addressComponents[i]['types'][0]=='locality':
+                foundCity=True
+                foundCityIndex=i
+                if i-1>=0:
+                    foundNeighbourhood=True
+                    foundNeighbourhoodIndex=i-1
+            if addressComponents[i]['types'][0]=='administrative_area_level_2':
+                foundCounty=True
+                foundCountyIndex=i
+            if addressComponents[i]['types'][0]=='administrative_area_level_1':
+                foundState=True
+                foundStateIndex=i
+        
+        if foundNeighbourhood and foundCity and foundCounty and foundState:
+            neighbourhoods.append(addressComponents[foundNeighbourhoodIndex]["long_name"])
+            cities.append(addressComponents[foundCityIndex]["long_name"])
+            counties.append(addressComponents[foundCountyIndex]["long_name"])
+            states.append(addressComponents[foundStateIndex]["long_name"])
+            addresses.append(jsonAddress["results"][0]["formatted_address"])
+        else:
+            addresses.append(None)
+            neighbourhoods.append(None)
+            cities.append(None)
+            counties.append(None)
+            states.append(None)
     else:
         addresses.append(None)
         neighbourhoods.append(None)
         cities.append(None)
         counties.append(None)
         states.append(None)
-    print(addresses[-1])
+    print(ind)
 
 cleanedCarDataFrame['neighbourhood'] = neighbourhoods
 cleanedCarDataFrame['city'] = cities
@@ -173,5 +182,4 @@ cleanedCarDataFrame=cleanedCarDataFrame.dropna(subset=['neighbourhood','city','c
 
 cleanedCarDataFrame.to_csv('./Data/CleanedCarData.csv')
 
-"""
 

@@ -4,34 +4,34 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
 
-export default function FiltersComponent({mapState,chartsLocationDispatch,chartsCategoryDispatch,resultsDispatch,chartsListingDispatch}){
+export default function FiltersComponent() {
 
-    const [radioValue, setRadioValue] = useState('1');
+  const [radioValue, setRadioValue] = useState('1');
 
-    const radios = [
-        { name: 'Homes', value: '1' },
-        { name: 'Vehicles', value: '2' },
-      ];
+  const radios = [
+    { name: 'Homes', value: '1' },
+    { name: 'Vehicles', value: '2' },
+  ];
 
 
 
-    return(
-        <div  id="filters" style={{
-            width: 0.3*window.parent.innerWidth,
-            height: window.parent.innerHeight,
-            backgroundColor: 'whitesmoke',
-            display: 'flex',
-            flexDirection: 'column',
-            left: 0.7*window.parent.innerWidth,
-            top:0,
-            position: 'absolute',
-            justifyContent: 'center',
-            alignItems: 'center',
-            overflow: 'hidden',
-        }}>
-                  <ButtonGroup style={{
-                    marginBottom: '5%'
-                  }}>
+  return (
+    <div id="filters" style={{
+      width: 0.3 * window.parent.innerWidth,
+      height: window.parent.innerHeight,
+      backgroundColor: 'whitesmoke',
+      display: 'flex',
+      flexDirection: 'column',
+      left: 0.7 * window.parent.innerWidth,
+      top: 0,
+      position: 'absolute',
+      justifyContent: 'center',
+      alignItems: 'center',
+      overflow: 'hidden',
+    }}>
+      <ButtonGroup style={{
+        marginBottom: '5%'
+      }}>
         {radios.map((radio, idx) => (
           <ToggleButton
             key={idx}
@@ -49,11 +49,9 @@ export default function FiltersComponent({mapState,chartsLocationDispatch,charts
       </ButtonGroup>
       {
         radioValue === '1' ?
-        <HomeFilters chartsLocationDispatch={chartsLocationDispatch} 
-        chartsCategoryDispatch={chartsCategoryDispatch} mapState={mapState} resultsDispatch={resultsDispatch} chartsListingDispatch={chartsListingDispatch}/> : 
-        <CarFilters chartsLocationDispatch={chartsLocationDispatch} 
-        chartsCategoryDispatch={chartsCategoryDispatch} mapState={mapState} resultsDispatch={resultsDispatch} chartsListingDispatch={chartsListingDispatch}/>
+          <HomeFilters /> :
+          <CarFilters />
       }
-        </div>
-    )
+    </div>
+  )
 }

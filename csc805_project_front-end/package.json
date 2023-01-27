@@ -45,5 +45,8 @@
       "react-app/jest"
     ]
   },
-  "browserslist": ["defaults", "not ie 11"]
+  "browserslist": [
+    "defaults",
+    "not ie 11"
+  ]
 }

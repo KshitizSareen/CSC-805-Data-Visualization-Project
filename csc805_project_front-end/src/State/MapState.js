@@ -1,10 +1,10 @@
 export const initialMapState ={
-    zoom: 3.5,
-    minLat: 0,
-    maxLat: 0,
-    minLong: 0,
-    maxLong: 0
-}
+        latitude: 37.0902,
+        longitude: -95.7129,
+        zoom: 3.5,
+        bearing: 0,
+        pitch: 0,
+    }
 
 export default function MapReducer(state, action) {
     // The reducer normally looks at the action type field to decide what happens

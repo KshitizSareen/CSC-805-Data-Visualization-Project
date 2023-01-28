@@ -43,6 +43,13 @@ export default function MapReducer(state, action) {
       }
     }
 
+    case 'changeViewState':{
+      return{
+        ...state,
+        ...action.viewState
+      }
+    }
+
     default:
       // If this reducer doesn't recognize the action type, or doesn't
       // care about this specific action, return the existing state unchanged

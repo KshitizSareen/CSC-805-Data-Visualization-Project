@@ -1,5 +1,4 @@
 import { Slider } from "@mui/material"
-import { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
 export const RangeSlider = ({ value, label, onChange ,minValue,maxValue}) => {

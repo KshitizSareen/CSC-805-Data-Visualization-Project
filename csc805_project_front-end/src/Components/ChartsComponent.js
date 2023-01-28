@@ -1,56 +1,109 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as d3 from 'd3';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Chart } from "react-google-charts";
+import AppContext from '../Context/AppContext';
+import { SetChartData } from '../utils/ChartUtils';
 
-export default function ChartsComponent({ chartsByListing, chartsByLocation, chartsByCategory }) {
 
+
+const getLocation = (zoom)=>{
+  if (zoom <= 5) {
+    return "state";
+  }
+  else if (zoom <= 7) {
+    return "county";
+  }
+  else if (zoom <= 9.5) {
+    return "city";
+  }
+  else {
+    return "neighbourhood";
+  }
+}
+
+const margin = { top: 50, right: 100, bottom: 50, left: 100 };
+const width = window.parent.outerWidth / 2.5;
+const height = window.parent.outerHeight / 4.75;
+const svgWidth = width + margin.left + margin.right;
+const svgHeight = height + margin.top + margin.bottom;
+const horizontalbarChartXScale = d3.scaleBand().range([0, width]).padding(0.1);
+const horizontalbarChartYScale = d3.scaleLinear().range([height, 0]);
+
+const horizontalbarChartXAxis = d3.axisBottom(horizontalbarChartXScale)
+const horizontalbarChartYAxis = d3.axisLeft(horizontalbarChartYScale)
+
+const verticalBarChartXScale = d3.scaleLinear().range([0, width])
+const verticalBarChartYScale = d3.scaleBand().range([height, 0]).padding(0.1);
+
+const verticalbarChartXAxis = d3.axisBottom(verticalBarChartXScale)
+const verticalbarChartYAxis = d3.axisLeft(verticalBarChartYScale)
+
+const lineXScale = d3.scaleLinear().range([0, width]);
+const lineYScale = d3.scaleLinear().range([height, 0]);
+
+const lineXAxis = d3.axisBottom(lineXScale);
+const lineYAxis = d3.axisLeft(lineYScale);
+
+const circleRadius = 3;
+
+
+
+export default function ChartsComponent(){
+  
+
+  
+  const {
+    homeFiltersState,
+    carFiltersState,
+    initialCategory,
+    resultsState,
+    mapState
+  } = useContext(AppContext);
+
+  const [chartsByListing,setChartsByListing] = useState([]);
+  const [chartsByLocation,setChartsByLocation] = useState([]);
+  const [chartsByCategory,setChartsByCategory] = useState([]);
   const [xAxisValue, setXAxisValue] = useState();
   const [yAxisValue, setYAxisValue] = useState();
-  var margin = { top: 50, right: 100, bottom: 50, left: 100 };
-  const width = window.parent.outerWidth / 2.5;
-  const height = window.parent.outerHeight / 4.75;
-  const svgWidth = width + margin.left + margin.right;
-  const svgHeight = height + margin.top + margin.bottom;
-
-  const horizontalBarChartRef = React.useRef(null);
-  const horizontalbarChartXScale = d3.scaleBand().range([0, width]).padding(0.1);
-  const horizontalbarChartYScale = d3.scaleLinear().range([height, 0]);
-
-  var horizontalbarChartXAxis = d3.axisBottom(horizontalbarChartXScale)
-  var horizontalbarChartYAxis = d3.axisLeft(horizontalbarChartYScale)
-
-  const verticalBarChartRef = React.useRef(null);
-  const verticalBarChartXScale = d3.scaleLinear().range([0, width])
-  const verticalBarChartYScale = d3.scaleBand().range([height, 0]).padding(0.1);
-
-  var verticalbarChartXAxis = d3.axisBottom(verticalBarChartXScale)
-  var verticalbarChartYAxis = d3.axisLeft(verticalBarChartYScale)
-
-  const lineChartRef = React.useRef(null)
-
-  var lineXScale = d3.scaleLinear().range([0, width]);
-  var lineYScale = d3.scaleLinear().range([height, 0]);
-
-  var lineXAxis = d3.axisBottom(lineXScale);
-  var lineYAxis = d3.axisLeft(lineYScale);
-
-  const circleRadius = 3;
-
-
-  useEffect(() => {
-    initializeHorizontalBarChart();
-    initializeVerticalBarChart();
-    initializeLineChart();
-  }, [height, margin.left, margin.top])
-
   const [pieChartData, setPieChartData] = useState([['Location', 'Count']])
+  const horizontalBarChartRef = React.useRef(null);
+  const verticalBarChartRef = React.useRef(null);
+  const lineChartRef = React.useRef(null);
 
-  function initializeHorizontalBarChart() {
+  const endPointDispatchFunctionsForVehicles =  useMemo(()=>[
+    {
+      endpoint: "group-vehicles-by-"+ getLocation(mapState.zoom),
+      stateFunction: setChartsByLocation,
+    },
+    {
+      endpoint: "group-vehicles-by-manufacturer",
+      stateFunction: setChartsByCategory,
+    },
+    {
+      endpoint: "search-vehicles",
+      stateFunction: setChartsByListing,
+    }
+  ],[mapState.zoom]);
+ 
+  const endPointDispatchFunctionsForHomes =  useMemo(()=>[
+    {
+      endpoint: "group-houses-by-"+ getLocation(mapState.zoom),
+      stateFunction: setChartsByLocation,
+    },
+    {
+      endpoint: "group-houses-by-type",
+      stateFunction: setChartsByCategory,
+    },
+    {
+      endpoint: "search-houses",
+      stateFunction: setChartsByListing,
+    }
+  ],[mapState.zoom]);
 
-    var horizontalBarChartElem = d3.select(horizontalBarChartRef.current);
+  const initializeHorizontalBarChart = useCallback(()=>{
+    const horizontalBarChartElem = d3.select(horizontalBarChartRef.current);
     horizontalBarChartElem.selectAll('*').remove();
-    var horizontalBarChartSvg = horizontalBarChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const horizontalBarChartSvg = horizontalBarChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     horizontalBarChartSvg.append("g").attr("class", "xAxis")
       .attr("transform", "translate(0," + height + ")")
 
@@ -75,12 +128,12 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       .attr("y", 35)
       .text("Location VS Price")
 
-  }
+  },[]);
 
-  function initializeVerticalBarChart() {
-    var verticalBarChartElem = d3.select(verticalBarChartRef.current);
+  const initializeVerticalBarChart = useCallback(()=>{
+    const verticalBarChartElem = d3.select(verticalBarChartRef.current);
     verticalBarChartElem.selectAll('*').remove();
-    var verticalBarChartSvg = verticalBarChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const verticalBarChartSvg = verticalBarChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     verticalBarChartSvg.append("g").attr("class", "xAxis")
       .attr("transform", "translate(0," + height + ")");
 
@@ -104,12 +157,12 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       .attr("y", -80)
       .attr("text-anchor", "middle")
       .text("Category");
-  }
+  },[]);
 
-  function initializeLineChart() {
-    var lineChartElem = d3.select(lineChartRef.current);
+  const initializeLineChart = useCallback(()=> {
+    const lineChartElem = d3.select(lineChartRef.current);
     lineChartElem.selectAll('*').remove();
-    var lineSvg = lineChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const lineSvg = lineChartElem.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
     lineSvg.append("g").attr("class", "xAxis").attr("transform", "translate(0," + height + ")");
     lineSvg.append("g").attr("class", "yAxis");
 
@@ -132,45 +185,37 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       .attr("y", -60)
       .attr("text-anchor", "middle")
       .text("Value");
+  },[]);
 
-    /*
-                <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        width: '20%',
-      }}>
-        <div style={{
-          width: 200,
-          height: 2,
-          backgroundColor: '#4daf4a',
-          alignSelf: 'center',
-          marginBottom: '5%'
-        }}/>
-        <p>Max Price</p>
-        </div>
-        */
+  const initializeData = useCallback(()=>{
+    if(initialCategory==="1")
+    {
+    endPointDispatchFunctionsForHomes.forEach(endPointFunction=>{
+      const {endpoint,stateFunction} = endPointFunction;
+      SetChartData(homeFiltersState,stateFunction,endpoint);
+    })
   }
+    else{
+      endPointDispatchFunctionsForVehicles.forEach(endPointFunction=>{
+        const {endpoint,stateFunction} = endPointFunction;
+        SetChartData(carFiltersState,stateFunction,endpoint);
+      })    
+    }
+  },[carFiltersState, endPointDispatchFunctionsForHomes, endPointDispatchFunctionsForVehicles, homeFiltersState, initialCategory]);
 
   useEffect(() => {
-
-    setHorizontalBarChartData();
-    resetPieChartData();
-  }, [chartsByLocation])
-
-  useEffect(() => {
-    setVerticalBarChartData();
-  }, [chartsByCategory])
-
-  useEffect(() => {
-    setLineChart();
-  }, [chartsByListing])
+    initializeHorizontalBarChart();
+    initializeVerticalBarChart();
+    initializeLineChart();
+    initializeData();
+  }, [initializeData, initializeHorizontalBarChart, initializeLineChart, initializeVerticalBarChart, resultsState])
 
 
-  function setHorizontalBarChartData() {
-    var t = d3.transition()
-      .duration(750)
+
+
+  const setHorizontalBarChartData = useCallback(()=>{
+    const t = d3.transition()
+    .duration(750)
     let xDomain = []
     let yMax = 0;
     let xDomainSet = new Set()
@@ -211,13 +256,13 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
     }
     horizontalbarChartXScale.domain(xDomain)
     horizontalbarChartYScale.domain([0, yMax])
-    var svgEl = d3.select(horizontalBarChartRef.current);
+    const svgEl = d3.select(horizontalBarChartRef.current);
 
-    var svg = svgEl.select("g");
+    const svg = svgEl.select("g");
     svg.selectAll('.xAxis').transition(t).call(horizontalbarChartXAxis);
     svg.selectAll('.yAxis').transition(t).call(horizontalbarChartYAxis);
 
-    var subgroups = ['MinPrice', 'AvgPrice', 'MaxPrice']
+    const subgroups = ['MinPrice', 'AvgPrice', 'MaxPrice']
 
     const xzScale = d3.scaleBand().range([0, horizontalbarChartXScale.bandwidth()]).padding(0.05);
     xzScale.domain(subgroups)
@@ -258,94 +303,93 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
 
 
 
-  }
+  },[chartsByLocation])
 
-  function setVerticalBarChartData() {
-    var t = d3.transition()
-      .duration(750)
-    let yDomain = []
-    let xMax = 0;
-    let yDomainSet = new Set()
 
-    let data = [];
-    for (let i = 0; i < chartsByCategory.length; i++) {
-      let chartElem = chartsByCategory[i];
-      let yValue = chartElem.Category;
-      let splitYValue = yValue.split(" ");
-      let newYValue = [];
-      for (let j = 0; j < splitYValue.length; j++) {
-        let value = splitYValue[j];
-        if (value !== "") {
-          newYValue.push(value[0].toUpperCase() + value.slice(1, value.length));
+  const setVerticalBarChartData = useCallback(()=>{
+    const t = d3.transition()
+    .duration(750)
+      let yDomain = []
+      let xMax = 0;
+      let yDomainSet = new Set()
+  
+      let data = [];
+      for (let i = 0; i < chartsByCategory.length; i++) {
+        let chartElem = chartsByCategory[i];
+        let yValue = chartElem.Category;
+        let splitYValue = yValue.split(" ");
+        let newYValue = [];
+        for (let j = 0; j < splitYValue.length; j++) {
+          let value = splitYValue[j];
+          if (value !== "") {
+            newYValue.push(value[0].toUpperCase() + value.slice(1, value.length));
+          }
         }
+        let newYValueString = newYValue.join(' ');
+        if (!yDomainSet.has(newYValueString)) {
+          yDomainSet.add(newYValueString)
+          yDomain.push(newYValueString)
+        }
+        xMax = Math.max(xMax, chartElem.MinPrice, chartElem.MaxPrice, chartElem.AvgPrice)
+        data.push({
+          value: chartElem.MaxPrice,
+          category: newYValueString,
+          key: 'MaxPrice'
+        })
+        data.push({
+          value: chartElem.AvgPrice,
+          category: newYValueString,
+          key: 'AvgPrice'
+        })
+        data.push({
+          value: chartElem.MinPrice,
+          category: newYValueString,
+          key: 'MinPrice'
+        })
       }
-      let newYValueString = newYValue.join(' ');
-      if (!yDomainSet.has(newYValueString)) {
-        yDomainSet.add(newYValueString)
-        yDomain.push(newYValueString)
-      }
-      xMax = Math.max(xMax, chartElem.MinPrice, chartElem.MaxPrice, chartElem.AvgPrice)
-      data.push({
-        value: chartElem.MaxPrice,
-        category: newYValueString,
-        key: 'MaxPrice'
-      })
-      data.push({
-        value: chartElem.AvgPrice,
-        category: newYValueString,
-        key: 'AvgPrice'
-      })
-      data.push({
-        value: chartElem.MinPrice,
-        category: newYValueString,
-        key: 'MinPrice'
-      })
-    }
-    verticalBarChartXScale.domain([0, xMax])
-    verticalBarChartYScale.domain(yDomain)
-    var svgEl = d3.select(verticalBarChartRef.current);
+      verticalBarChartXScale.domain([0, xMax])
+      verticalBarChartYScale.domain(yDomain)
+      const svgEl = d3.select(verticalBarChartRef.current);
+  
+      const svg = svgEl.select("g");
+      svg.selectAll('.xAxis').transition(t).call(verticalbarChartXAxis);
+      svg.selectAll('.yAxis').transition(t).call(verticalbarChartYAxis);
+  
+      const subgroups = ['MinPrice', 'AvgPrice', 'MaxPrice']
+  
+      const zScale = d3.scaleOrdinal(subgroups, ['#e41a1c', '#377eb8', '#4daf4a']);
+  
+  
+      const categoryElems = svg.selectAll("rect")
+        .data(data)
+  
+      categoryElems
+        .enter()
+        .append("rect").on('mouseover', (e, d) => {
+          setXAxisValue('$' + d.value);
+          setYAxisValue(d.category);
+        }).on('mouseout', () => {
+          setXAxisValue();
+          setYAxisValue()
+        })
+        .merge(categoryElems)
+        .transition(t)
+        .attr("x", 0)
+        .attr("y", function (d) { return verticalBarChartYScale(d.category) })
+        .attr("width", d => verticalBarChartXScale(d.value))
+        .attr("height", verticalBarChartYScale.bandwidth())
+        .attr("fill", function (d) { return zScale(d.key) })
+  
+      categoryElems.exit().remove();
+  },[chartsByCategory]);
 
-    var svg = svgEl.select("g");
-    svg.selectAll('.xAxis').transition(t).call(verticalbarChartXAxis);
-    svg.selectAll('.yAxis').transition(t).call(verticalbarChartYAxis);
-
-    var subgroups = ['MinPrice', 'AvgPrice', 'MaxPrice']
-
-    const zScale = d3.scaleOrdinal(subgroups, ['#e41a1c', '#377eb8', '#4daf4a']);
 
 
-    const categoryElems = svg.selectAll("rect")
-      .data(data)
-
-    categoryElems
-      .enter()
-      .append("rect").on('mouseover', (e, d) => {
-        setXAxisValue('$' + d.value);
-        setYAxisValue(d.category);
-      }).on('mouseout', () => {
-        setXAxisValue();
-        setYAxisValue()
-      })
-      .merge(categoryElems)
-      .transition(t)
-      .attr("x", 0)
-      .attr("y", function (d) { return verticalBarChartYScale(d.category) })
-      .attr("width", d => verticalBarChartXScale(d.value))
-      .attr("height", verticalBarChartYScale.bandwidth())
-      .attr("fill", function (d) { return zScale(d.key) })
-
-    categoryElems.exit().remove();
-
-  }
-
-  function setLineChart() {
-
-    console.log(chartsByListing)
-    var t = d3.transition()
-      .duration(750)
-
-    var lineChartElem = d3.select(lineChartRef.current);
-    var lineSvg = lineChartElem.select("g");
+  const setLineChart = useCallback(()=>{
+    const t = d3.transition()
+    .duration(750)
+    const lineChartElem = d3.select(lineChartRef.current);
+    const lineSvg = lineChartElem.select("g");
 
     let minY = Infinity
     let maxY = 0
@@ -384,7 +428,6 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
     }
     data = [priceData, valueData]
     const circleData = priceData.concat(valueData)
-    console.log(data);
     lineXScale.domain([minX, maxX]);
     lineYScale.domain([minY, maxY]);
 
@@ -394,7 +437,7 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
     const color = d3.scaleOrdinal([0, 1, 2, 3, 4])
       .range(['#e41a1c', '#377eb8'])
 
-    var lines = lineSvg.selectAll(".line")
+    const lines = lineSvg.selectAll(".line")
       .data(data)
 
     lines.enter().append("path")
@@ -414,7 +457,7 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
           })(d)
       })
 
-    var circles = lineSvg.selectAll(".circle").data(circleData)
+    const circles = lineSvg.selectAll(".circle").data(circleData)
 
     circles.enter().append("circle").on('mouseover', (e, d) => {
       setXAxisValue("Listing ID " + d.index);
@@ -439,9 +482,8 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
     circles.exit().remove();
 
     lines.exit().remove();
-  }
-
-  function resetPieChartData() {
+  },[chartsByListing]);
+  const resetPieChartData = useCallback(()=>{
 
     let data = [['Location', 'Count']];
     for (let i = 0; i < chartsByLocation.length; i++) {
@@ -459,8 +501,19 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       data.push([newXValueString, chartElem.Count])
       setPieChartData(data);
     }
+  },[chartsByLocation]);
 
-  }
+  useEffect(() => {
+    setHorizontalBarChartData();
+    resetPieChartData();
+  }, [chartsByLocation, resetPieChartData, setHorizontalBarChartData])
+  useEffect(() => {
+    setVerticalBarChartData();
+  }, [chartsByCategory, setVerticalBarChartData])
+
+  useEffect(() => {
+    setLineChart();
+  }, [chartsByListing, setLineChart])
 
 
   const options = {
@@ -475,12 +528,9 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       backgroundColor: 'whitesmoke',
       display: 'flex',
       flexDirection: 'column',
-      left: window.parent.innerWidth,
-      top: 0,
       position: 'absolute',
       justifyContent: 'center',
       alignItems: 'center',
-      overflow: 'hidden'
     }}>
       <div>X-Axis Value: {xAxisValue}</div>
       <div>Y-Axis Value: {yAxisValue}</div>
@@ -547,12 +597,12 @@ export default function ChartsComponent({ chartsByListing, chartsByLocation, cha
       }}>
         <svg ref={lineChartRef} width={svgWidth} height={svgHeight} />
         <Chart
-          chartType="PieChart"
-          data={pieChartData}
-          options={options}
-          width={svgWidth}
-          height={svgHeight}
-        />
+      chartType="PieChart"
+      data={pieChartData}
+      options={options}
+      width={svgWidth}
+      height={svgHeight}
+    />
       </div>
     </div>
   )

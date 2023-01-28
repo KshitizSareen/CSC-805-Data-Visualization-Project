@@ -11,7 +11,10 @@ export const initialCarFilters = {
     minLat: 0,
     maxLat: 0,
     minLong: 0,
-    maxLong: 0
+    maxLong: 0,
+    "manufacturersArray":[],
+    "fuelTypesArray":[],
+    "vehicleTypesArray":[],
 }
 
 export default function CarFiltersReducer(state, action) {

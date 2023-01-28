@@ -93,15 +93,15 @@ export default function CarFilters() {
 
 
   const setManufacturers = (Manufacturers) => {
-    changeMultipleOptionsValue(Manufacturers,'id',carFiltersDispatch,'changeCarFiltersState','manufacturers')
+    changeMultipleOptionsValue(Manufacturers,'id',carFiltersDispatch,'changeCarFiltersState','manufacturers','manufacturersArray')
   }
 
   const setFuelTypes = (fuelTypes) =>{
-    changeMultipleOptionsValue(fuelTypes,'value',carFiltersDispatch,'changeCarFiltersState','fuelTypes')
+    changeMultipleOptionsValue(fuelTypes,'value',carFiltersDispatch,'changeCarFiltersState','fuelTypes','fuelTypesArray')
   }
 
   const setVehicleTypes = (vehicleTypes) =>{
-    changeMultipleOptionsValue(vehicleTypes,'value',carFiltersDispatch,'changeCarFiltersState','vehicleTypes')
+    changeMultipleOptionsValue(vehicleTypes,'value',carFiltersDispatch,'changeCarFiltersState','vehicleTypes','vehicleTypesArray')
   }
 
   const setCarsPrice = (minValue,maxValue) => {
@@ -127,21 +127,24 @@ export default function CarFilters() {
       options: Manufacturers,
       label: 'Manufacturers',
       placeHolder: 'Manufacturers',
-      onChange: setManufacturers
+      onChange: setManufacturers,
+      value: carFiltersState.manufacturersArray
     },
     {
       inputType: 'multipleSelect',
       options: fuelTypes,
       label: 'Fuel Types',
       placeHolder: 'Fuel Types',
-      onChange: setFuelTypes
+      onChange: setFuelTypes,
+      value: carFiltersState.fuelTypesArray
     },
     {
       inputType: 'multipleSelect',
       options: vehicleTypes,
       label: 'Vehicle Types',
       placeHolder: 'Vehicle Types',
-      onChange: setVehicleTypes
+      onChange: setVehicleTypes,
+      value: carFiltersState.vehicleTypesArray
     },
     {
       inputType: 'range',

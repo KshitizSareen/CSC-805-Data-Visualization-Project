@@ -98,13 +98,14 @@ export default function HomeFilters() {
   } = useContext(AppContext);
 
   const setHousingTypes = (housingTypes) => {
-    changeMultipleOptionsValue(housingTypes,'value',homeFiltersDispatch,'changeHomeFiltersState','housingTypes')
+    changeMultipleOptionsValue(housingTypes,'value',homeFiltersDispatch,'changeHomeFiltersState','housingTypes',"housingTypesArray")
   }
 
   const setHousingAmeneties = (amenities) => {
     let amenityValues = {};
     changeAmentityValues(HomeOptions, "0", amenityValues);
     changeAmentityValues(amenities, "NULL", amenityValues);
+    amenityValues["amenitiesArray"] = amenities;
     homeFiltersDispatch({
       type: 'changeHomeFiltersState',
       data: amenityValues
@@ -137,14 +138,16 @@ export default function HomeFilters() {
       options: HousingTypeValues,
       label: 'Housing Types',
       placeHolder: 'Housing Types',
-      onChange: setHousingTypes
+      onChange: setHousingTypes,
+      value: homeFiltersState.housingTypesArray
     },
     {
       inputType: 'multipleSelect',
       options: HomeOptions,
       label: 'Housing Options',
       placeHolder: 'Housing Options',
-      onChange: setHousingAmeneties
+      onChange: setHousingAmeneties,
+      value: homeFiltersState.amenitiesArray
     },
     {
       inputType: 'range',

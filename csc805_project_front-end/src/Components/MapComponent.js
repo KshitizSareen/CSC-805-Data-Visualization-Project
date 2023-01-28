@@ -16,7 +16,8 @@ export default function MapComponent() {
     resultsState,
     homeFiltersDispatch,
     carFiltersDispatch,
-    carFiltersState
+    viewState,
+    viewDispatch
   } = useContext(AppContext);
 
 
@@ -57,6 +58,10 @@ export default function MapComponent() {
       minLong: minMaxCoordinates.minLong,
       maxLong: minMaxCoordinates.maxLong
     })
+    viewDispatch({
+      type: 'changeViewState',
+      viewState
+    })
     homeFiltersDispatch({
       type: 'changeHomeFiltersState',
       data: minMaxCoordinates
@@ -65,15 +70,14 @@ export default function MapComponent() {
       type: 'changeCarFiltersState',
       data: minMaxCoordinates
     })
-
-    console.log(carFiltersState);
+    
   }
 
 
   return (
     <DeckGL
       layers={layers}
-      initialViewState={initialViewState}
+      initialViewState={viewState}
       height={window.parent.innerHeight}
       width={0.7 * window.parent.innerWidth}
       controller={true}// allows the user to move the map around

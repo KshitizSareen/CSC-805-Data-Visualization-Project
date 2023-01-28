@@ -17,7 +17,9 @@ export const initialHomeFilters = {
     "minLat": 0,
     "maxLat": 0,
     "minLong": 0,
-    "maxLong": 0
+    "maxLong": 0,
+    "housingTypesArray": [],
+    "amenitiesArray": [],
 }
 
 export default function HomeFiltersReducer(state, action) {

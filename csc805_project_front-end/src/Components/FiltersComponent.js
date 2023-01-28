@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { useNavigate } from 'react-router-dom';
+import AppContext from '../Context/AppContext';
 import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
+import { InputButton } from './InputComponents/Buttons';
+
 
 export default function FiltersComponent() {
 
-  const [radioValue, setRadioValue] = useState('1');
+  const {
+    initialCategory,
+    setInitialCategory
+  } = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   const radios = [
     { name: 'Homes', value: '1' },
     { name: 'Vehicles', value: '2' },
   ];
 
-
+  const navigateToCharts = () =>{
+    navigate("/charts");
+  }
 
   return (
     <div id="filters" style={{
@@ -40,18 +51,21 @@ export default function FiltersComponent() {
             variant={'outline-success'}
             name="radio"
             value={radio.value}
-            checked={radioValue === radio.value}
-            onChange={(e) => setRadioValue(e.currentTarget.value)}
+            checked={initialCategory === radio.value}
+            onChange={(e) => setInitialCategory(e.currentTarget.value)}
           >
             {radio.name}
           </ToggleButton>
         ))}
       </ButtonGroup>
       {
-        radioValue === '1' ?
+        initialCategory === '1' ?
           <HomeFilters /> :
           <CarFilters />
       }
+      <InputButton label={"Visualize Charts"} style={{
+        marginTop: '3%'
+      }} onClick={navigateToCharts}/>
     </div>
   )
 }

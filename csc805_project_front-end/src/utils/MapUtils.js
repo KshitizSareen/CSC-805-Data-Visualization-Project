@@ -15,8 +15,8 @@ export const GetMinMaxCoordinates = (mapState) => {
     }
 }
 
-const SetMapData = (filters, dispatchFunction) => {
-    axios.post("https://4z7a62t8x1.execute-api.us-west-1.amazonaws.com/csc805-datavis-stage/search-houses", filters).then(res => {
+const SetMapData = (filters, dispatchFunction,endPoint) => {
+    axios.post(process.env.REACT_APP_API_URL+endPoint, filters).then(res => {
         console.log(res.data);
 
         dispatchFunction({

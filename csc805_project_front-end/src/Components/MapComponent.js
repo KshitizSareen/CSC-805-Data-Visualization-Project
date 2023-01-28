@@ -16,7 +16,7 @@ export default function MapComponent() {
     resultsState,
     homeFiltersDispatch,
     carFiltersDispatch,
-    homeFiltersState
+    carFiltersState
   } = useContext(AppContext);
 
 
@@ -66,7 +66,7 @@ export default function MapComponent() {
       data: minMaxCoordinates
     })
 
-    console.log(homeFiltersState);
+    console.log(carFiltersState);
   }
 
 

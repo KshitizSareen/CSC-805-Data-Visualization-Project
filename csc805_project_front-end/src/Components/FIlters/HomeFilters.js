@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import AppContext from "../../Context/AppContext"
-import { changeRangeValue } from "../../utils/FilterUtils"
+import { changeMultipleOptionsValue, changeRangeValue, changeTypeValue } from "../../utils/FilterUtils"
 import { SetMapData } from "../../utils/MapUtils"
 import { Form } from "../Form"
 
@@ -98,18 +98,7 @@ export default function HomeFilters() {
   } = useContext(AppContext);
 
   const setHousingTypes = (housingTypes) => {
-    const housingValues = [];
-    for (const housingType of housingTypes) {
-      const { value } = housingType;
-      housingValues.push(value);
-    }
-    const housingValuesString = housingValues.join(',');
-    homeFiltersDispatch({
-      type: 'changeHomeFiltersState',
-      data: {
-        'housingTypes': housingValuesString.length === 0 ? "NULL" : "'" + housingValuesString + "'",
-      }
-    })
+    changeMultipleOptionsValue(housingTypes,'value',homeFiltersDispatch,'changeHomeFiltersState','housingTypes')
   }
 
   const setHousingAmeneties = (amenities) => {
@@ -122,28 +111,24 @@ export default function HomeFilters() {
     })
   }
 
-  const setHousingPrice = (value) => {
-    changeRangeValue('minPrice','maxPrice',value[0],value[1],homeFiltersDispatch)
+  const setHousingPrice = (minValue,maxValue) => {
+    changeRangeValue('minPrice','maxPrice',minValue,maxValue,homeFiltersDispatch,'changeHomeFiltersState')
   }
 
-  const setHousingSpace = (value) => {
-    changeRangeValue('minSqFeet','maxSqFeet',value[0],value[1],homeFiltersDispatch)
+  const setHousingSpace = (minValue,maxValue) => {
+    changeRangeValue('minSqFeet','maxSqFeet',minValue,maxValue,homeFiltersDispatch,'changeHomeFiltersState')
   }
 
-  const setHousingBeds = (value) => {
-    changeRangeValue('minBeds','maxBeds',value[0],value[1],homeFiltersDispatch)
+  const setHousingBeds = (minValue,maxValue) => {
+    changeRangeValue('minBeds','maxBeds',minValue,maxValue,homeFiltersDispatch,'changeHomeFiltersState')
   }
 
-  const setHousingBaths = (value) => {
-    changeRangeValue('minBaths','maxBaths',value[0],value[1],homeFiltersDispatch)
+  const setHousingBaths = (minValue,maxValue) => {
+    changeRangeValue('minBaths','maxBaths',minValue,maxValue,homeFiltersDispatch,'changeHomeFiltersState')
   }
 
   const searchHousing = ()=>{
-    SetMapData(homeFiltersState,resultsDispatch)
-  }
-
-  const getSuperScriptComponent = (SuperSricpt)=>{
-    return <sup>{SuperSricpt}</sup>
+    SetMapData(homeFiltersState,resultsDispatch,"search-houses");
   }
 
   const options = [

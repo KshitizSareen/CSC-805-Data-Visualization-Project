@@ -22,7 +22,7 @@ function App() {
       ...initialHomeFilters,
       ...minMaxCoordinates
     }
-    SetMapData(initialFilters, resultsDispatch);
+    SetMapData(initialFilters, resultsDispatch,"search-houses");
     homeFiltersDispatch({
       type: 'changeHomeFiltersState',
       data: minMaxCoordinates

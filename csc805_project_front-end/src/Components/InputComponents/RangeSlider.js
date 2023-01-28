@@ -2,12 +2,9 @@ import { Slider } from "@mui/material"
 import { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
-export const RangeSlider = ({ value, label, onChange ,SuperSricpt,minValue,maxValue}) => {
-    useEffect(()=>{
-        console.log(value);
-    },[])
+export const RangeSlider = ({ value, label, onChange ,minValue,maxValue}) => {
     const handleChange = (event, newValue) => {
-        onChange(newValue);
+        onChange(newValue[0],newValue[1]);
     };
 
     return (

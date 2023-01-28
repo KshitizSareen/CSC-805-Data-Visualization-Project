@@ -15,16 +15,10 @@ export default function FiltersComponent() {
     setInitialCategory
   } = useContext(AppContext);
 
-  const navigate = useNavigate();
-
   const radios = [
     { name: 'Homes', value: '1' },
     { name: 'Vehicles', value: '2' },
   ];
-
-  const navigateToCharts = () =>{
-    navigate("/charts");
-  }
 
   return (
     <div id="filters" style={{
@@ -63,9 +57,6 @@ export default function FiltersComponent() {
           <HomeFilters /> :
           <CarFilters />
       }
-      <InputButton label={"Visualize Charts"} style={{
-        marginTop: '3%'
-      }} onClick={navigateToCharts}/>
     </div>
   )
 }

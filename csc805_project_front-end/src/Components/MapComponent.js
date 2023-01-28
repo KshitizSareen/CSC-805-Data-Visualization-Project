@@ -3,8 +3,10 @@ import DeckGL from "deck.gl";
 import { Map } from "react-map-gl";
 import { IconLayer } from '@deck.gl/layers';
 import AppContext from '../Context/AppContext';
-import { initialViewState } from "../State/MapState";
 import { GetMinMaxCoordinates } from "../utils/MapUtils";
+import { InputButton } from "./InputComponents/Buttons";
+import { FaChartBar} from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 const ICON_MAPPING = {
   marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
@@ -19,6 +21,12 @@ export default function MapComponent() {
     viewState,
     viewDispatch
   } = useContext(AppContext);
+
+  const navigate = useNavigate();
+
+  const navigateToCharts = () =>{
+    navigate("/charts");
+  }
 
 
   const layers = [
@@ -93,6 +101,12 @@ export default function MapComponent() {
         mapStyle="mapbox://styles/mapbox/dark-v11"
         mapboxAccessToken={'pk.eyJ1Ijoia3NoaXRpejA3IiwiYSI6ImNsYmFrbnF0ajBhaDgzd3BpMnk0Nm84ZGsifQ.uI_5eWkQ7GsYY1J4cDNU1w'}
       />
+        <InputButton style={{
+          position: 'absolute',
+          left: 30,
+          top: 30,
+          alignSelf: 'flex-start'
+        }} onClick={navigateToCharts}><FaChartBar color="darkblue" size={25}/></InputButton>
     </DeckGL>
   )
 }

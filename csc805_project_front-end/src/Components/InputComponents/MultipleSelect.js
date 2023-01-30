@@ -8,11 +8,13 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export const MultipleSelect = ({ options, label, placeholder, onChange,value }) => {
+export const MultipleSelect = ({ options, label, placeholder, onChange,value,error }) => {
     return (
         <div style={{
+            marginBottom: '5%',
             width: '90%',
-            marginBottom: '5%'
+            display: 'flex',
+            flexDirection: 'column',
         }}>
         <Autocomplete
             multiple
@@ -31,7 +33,6 @@ export const MultipleSelect = ({ options, label, placeholder, onChange,value }) 
                     {option.label}
                 </li>
             )}
-            style={{ alignSelf: 'center' }}
             renderInput={(params) => (
                 <TextField {...params} label={label} placeholder={placeholder} />
             )}
@@ -40,6 +41,10 @@ export const MultipleSelect = ({ options, label, placeholder, onChange,value }) 
             }}
             value={value}
         />
+        <label style={{
+                    color: 'red',
+                    alignSelf: 'flex-start'
+                }}>{error}</label>
         </div>
     )
 }

@@ -9,6 +9,8 @@ import { GetMinMaxCoordinates, SetMapData } from './utils/MapUtils';
 import HomeFiltersReducer, { initialHomeFilters } from './State/HomeFiltersState';
 import CarFiltersReducer, { initialCarFilters } from './State/CarFiltersState';
 import ChartsComponent from './Components/ChartsComponent';
+import { UploadListing } from './Components/UploadListing';
+import { CropComponent } from './Components/CropComponent';
 
 function App() {
   
@@ -18,7 +20,7 @@ function App() {
   const [homeFiltersState, homeFiltersDispatch] = useReducer(HomeFiltersReducer, initialHomeFilters)
   const [carFiltersState, carFiltersDispatch] = useReducer(CarFiltersReducer, initialCarFilters);
   const [initialCategory,setInitialCategory] = useState("1");
-
+  const [imageURL,setImageURL] = useState("");
 
   const setInitialMapData = () => {
     const minMaxCoordinates = GetMinMaxCoordinates(initialViewState);
@@ -60,7 +62,8 @@ function App() {
     }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/charts/" element={<ChartsComponent/>} />
+          <Route path="/charts" element={<ChartsComponent/>} />
+          <Route path="/uploadlisting" element={<UploadListing/>}/>
         </Routes>
     </AppContext.Provider>
     </div>

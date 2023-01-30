@@ -5,7 +5,7 @@ import { IconLayer } from '@deck.gl/layers';
 import AppContext from '../Context/AppContext';
 import { GetMinMaxCoordinates } from "../utils/MapUtils";
 import { InputButton } from "./InputComponents/Buttons";
-import { FaChartBar} from 'react-icons/fa';
+import { FaChartBar, FaPlus} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
 const ICON_MAPPING = {
@@ -26,6 +26,10 @@ export default function MapComponent() {
 
   const navigateToCharts = () =>{
     navigate("/charts");
+  }
+
+  const navigateToUploadComponent = () =>{
+    navigate("/uploadlisting");
   }
 
 
@@ -107,6 +111,12 @@ export default function MapComponent() {
           top: 30,
           alignSelf: 'flex-start'
         }} onClick={navigateToCharts}><FaChartBar color="darkblue" size={25}/></InputButton>
+        <InputButton style={{
+          position: 'absolute',
+          left: 30,
+          top: 100,
+          alignSelf: 'flex-start'
+        }} onClick={navigateToUploadComponent}><FaPlus color="darkblue" size={25}/></InputButton>
     </DeckGL>
   )
 }

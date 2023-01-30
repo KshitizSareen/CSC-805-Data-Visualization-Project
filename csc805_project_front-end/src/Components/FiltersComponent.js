@@ -3,6 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../Context/AppContext';
+import { CategoryHeadersComponent } from './CategoryHeadersComponent';
 import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
 import { InputButton } from './InputComponents/Buttons';
@@ -34,24 +35,7 @@ export default function FiltersComponent() {
       alignItems: 'center',
       overflow: 'hidden',
     }}>
-      <ButtonGroup style={{
-        marginBottom: '5%'
-      }}>
-        {radios.map((radio, idx) => (
-          <ToggleButton
-            key={idx}
-            id={`radio-${idx}`}
-            type="radio"
-            variant={'outline-success'}
-            name="radio"
-            value={radio.value}
-            checked={initialCategory === radio.value}
-            onChange={(e) => setInitialCategory(e.currentTarget.value)}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
+      <CategoryHeadersComponent radios={radios} Category={initialCategory} SetCategory={setInitialCategory}/>
       {
         initialCategory === '1' ?
           <HomeFilters /> :

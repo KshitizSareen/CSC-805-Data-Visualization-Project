@@ -1,5 +1,6 @@
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import { CategoryHeadersComponent } from './CategoryHeadersComponent';
 
 export const ChartHeaderComponent = ({xAxisValue,yAxisValue,chartCategory,setChartCategory}) =>{
     
@@ -11,24 +12,7 @@ export const ChartHeaderComponent = ({xAxisValue,yAxisValue,chartCategory,setCha
     return(
         <>
         <div>
-        <ButtonGroup style={{
-        marginBottom: '5%'
-      }}>
-        {radios.map((radio, idx) => (
-          <ToggleButton
-            key={idx}
-            id={`radio-${idx}`}
-            type="radio"
-            variant={'outline-success'}
-            name="radio"
-            value={radio.value}
-            checked={chartCategory === radio.value}
-            onChange={(e) => setChartCategory(e.currentTarget.value)}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
+          <CategoryHeadersComponent radios={radios} Category={chartCategory} SetCategory={setChartCategory}/>
         </div>
         <div>X-Axis Value: {xAxisValue}</div>
         <div>Y-Axis Value: {yAxisValue}</div>

@@ -1,8 +1,9 @@
+import json
 import pandas as pd
 import requests
-carDataFrame=pd.read_csv("./Data/vehicles.csv")
+# carDataFrame=pd.read_csv("./Data/vehicles.csv")
 
-cleanedCarDataFrame = carDataFrame.dropna(subset=['id', 'url','price','year','manufacturer','model','condition','cylinders','fuel','odometer','title_status','transmission','drive','type','image_url', 'lat','long']).drop(columns=['id','url','region','region_url', 'state','VIN','county','posting_date','size','paint_color'])
+# cleanedCarDataFrame = carDataFrame.dropna(subset=['id', 'url','price','year','manufacturer','model','condition','cylinders','fuel','odometer','title_status','transmission','drive','type','image_url', 'lat','long']).drop(columns=['id','url','region','region_url', 'state','VIN','county','posting_date','size','paint_color'])
 
 """
 modelsSet={}
@@ -36,28 +37,23 @@ with open("carModels.json", "w") as final:
 """
 
 
-carModels=cleanedCarDataFrame.model.unique()
+carManufacturers=pd.read_json("./Data/carManufacturers.json")
+print(carManufacturers)
 
-carManufacturers=cleanedCarDataFrame.manufacturer.unique()
 
-"""
 DataFrameArray=[]
 k=0
-for word in carManufacturers:
-    splitTemp = word.split(' ')
-    newWordArray=[]
-    for word in splitTemp:
-        if word!="":
-            newWordArray.append(word[0].upper()+word[1:])
+for index in carManufacturers.index:
     DataFrameArray.append({
-        'name': ' '.join(newWordArray),
+        'label': carManufacturers['name'][k],
         'id': k
     })
     k+=1
 with open("carManufacturers.json", "w") as final:
     json.dump(DataFrameArray, final)
 
-
+"""
+carModels=cleanedCarDataFrame.model.unique()
 DataFrameArray=[]
 k=0
 for word in carModels:
@@ -76,7 +72,7 @@ with open("carModels.json", "w") as final:
 
 exit()
 
-"""
+
 
 
 carConditions = cleanedCarDataFrame.condition.unique()
@@ -183,3 +179,4 @@ cleanedCarDataFrame=cleanedCarDataFrame.dropna(subset=['neighbourhood','city','c
 cleanedCarDataFrame.to_csv('./Data/CleanedCarData.csv')
 
 
+"""

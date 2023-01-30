@@ -23,7 +23,7 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	var vehicle VehicleStructs.Vehicle
 	var vehicles []VehicleStructs.Vehicle
 	for query.Next() {
-		query.Scan(&vehicle.Index, &vehicle.Price, &vehicle.Year, &vehicle.Manufacturer, &vehicle.Model, &vehicle.Condition, &vehicle.Cylinders, &vehicle.Fuel, &vehicle.Odometer, &vehicle.Title_Status, &vehicle.Transmission, &vehicle.Drive, &vehicle.Type, &vehicle.Image_URL, &vehicle.Description, &vehicle.Lat, &vehicle.Long, &vehicle.Manufacturer_Category, &vehicle.Model_Category, &vehicle.Condition_Category, &vehicle.Cylinders_Category, &vehicle.Fuel_Category, &vehicle.Title_Status_Category, &vehicle.Transmission_Category, &vehicle.Drive_Category, &vehicle.Type_Category, &vehicle.Neighbourhood, &vehicle.City, &vehicle.County, &vehicle.State, &vehicle.Address)
+		query.Scan(&vehicle.Index, &vehicle.Price, &vehicle.Year, &vehicle.Manufacturer, &vehicle.Model, &vehicle.Condition, &vehicle.Cylinders, &vehicle.Fuel, &vehicle.Odometer, &vehicle.Title_Status, &vehicle.Transmission, &vehicle.Drive, &vehicle.Type, &vehicle.Image_URL, &vehicle.Description, &vehicle.Lat, &vehicle.Long, &vehicle.Manufacturer_Category, &vehicle.Model_Category, &vehicle.Condition_Category, &vehicle.Cylinders_Category, &vehicle.Fuel_Category, &vehicle.Title_Status_Category, &vehicle.Transmission_Category, &vehicle.Drive_Category, &vehicle.Type_Category, &vehicle.Neighbourhood, &vehicle.City, &vehicle.County, &vehicle.State, &vehicle.Address, &vehicle.Email)
 		vehicles = append(vehicles, vehicle)
 	}
 	defer query.Close()

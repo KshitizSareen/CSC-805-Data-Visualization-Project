@@ -11,7 +11,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 export const MultipleSelect = ({ options, label, placeholder, onChange,value,error }) => {
     return (
         <div style={{
-            marginBottom: '5%',
+            marginBottom: '1%',
             width: '90%',
             display: 'flex',
             flexDirection: 'column',

@@ -1,11 +1,13 @@
 import { useContext, useState } from "react"
 import UploadContext from "../../Context/UploadContext"
-import { HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
-import { ValidateAddressOption, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
+import { homeErrors, HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
+import { UploadImage } from "../../utils/UploadUtils"
+import { ValidateAddressOption, ValidateEmail, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
 import { Form } from "../Form"
 
 export const AddListingForHomes = () =>{
-    const {addHomeDataState,addHomeDataStateDispatch} = useContext(UploadContext);
+    const {addHomeDataState,addHomeDataStateDispatch,imagePositions,
+        setImagePositions} = useContext(UploadContext);
 
     const setPrice = (value)=>{
         setAddHomeDataState(value,'price',addHomeDataStateDispatch)
@@ -36,16 +38,22 @@ export const AddListingForHomes = () =>{
         setAddHomeDataState(value,'address',addHomeDataStateDispatch)
     }
 
+    const setEmail = (value) =>{
+        setAddHomeDataState(value,'email',addHomeDataStateDispatch)
+    }
 
-    const [optionErrors,setOptionErrors] = useState(["","",""])
+
+    const [optionErrors,setOptionErrors] = useState(homeErrors)
 
     const submitOptions = () =>{
-        const foundErrors= validateOptions(options,setOptionErrors);
+        const foundErrors= validateOptions(options,setOptionErrors,homeErrors);
         if(!foundErrors)
         {
-            console.log("done");
+           const imageURLs= UploadImage(imagePositions);
+           imageURLs.then(data=>{
+            console.log(data);
+           })
         }
-
     }
 
     const options=[
@@ -56,8 +64,9 @@ export const AddListingForHomes = () =>{
             value: addHomeDataState.housingTypes,
             onChange: setHousingType,
             error: validationErrors.selectError,
-            errorToDisplay: optionErrors[0],
-            validatorFunction: ValidateSelectOption
+            errorToDisplay: optionErrors.selectHousing,
+            validatorFunction: ValidateSelectOption,
+            name: 'selectHousing'
         },
         {
             inputType: 'multipleSelect',
@@ -65,9 +74,6 @@ export const AddListingForHomes = () =>{
             label: 'Home Options',
             value: addHomeDataState.housingOptions,
             onChange: setHousingOptions,
-            error: validationErrors.multipleSelectError,
-            errorToDisplay: optionErrors[1],
-            validatorFunction: ValidateMultipleSelectOption
         },
         {
             inputType: 'mapsAutocomplete',
@@ -75,8 +81,9 @@ export const AddListingForHomes = () =>{
             value: addHomeDataState.address,
             onChange: setAddress,
             error: validationErrors.addressError,
-            errorToDisplay: optionErrors[2],
-            validatorFunction: ValidateAddressOption
+            errorToDisplay: optionErrors.address,
+            validatorFunction: ValidateAddressOption,
+            name: 'address'
         },
         {
             inputType: 'slider',
@@ -109,6 +116,16 @@ export const AddListingForHomes = () =>{
             onChange: setNoOfBaths,
             minValue: 0,
             maxValue: 10
+        },
+        {
+            inputType: 'textInput',
+            label: 'Email',
+            value: addHomeDataState.email,
+            onChange: setEmail,
+            error: validationErrors.emailError,
+            errorToDisplay: optionErrors.email,
+            validatorFunction: ValidateEmail,
+            name: 'email'
         },
         {
             inputType: 'button',

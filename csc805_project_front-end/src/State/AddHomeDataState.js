@@ -5,7 +5,8 @@ export const initialAddHomeDataState ={
     sqFeet: 2000,
     noOfBeds: 2,
     noOfBaths: 2,
-    address: null
+    address: null,
+    email:"",
 }
 
 export const AddHomesDataStateReducer = (state,action) =>{

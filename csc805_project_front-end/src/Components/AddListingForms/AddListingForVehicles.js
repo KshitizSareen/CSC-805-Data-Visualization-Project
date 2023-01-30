@@ -1,13 +1,15 @@
 import { useContext, useState } from "react"
 import UploadContext from "../../Context/UploadContext"
-import { fuelTypes, Manufacturers, setAddVehicleDataState, vehicleTypes } from "../../utils/CarUtils"
+import { fuelTypes, Manufacturers, setAddVehicleDataState, vehicleErrors, vehicleTypes } from "../../utils/CarUtils"
 import { HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
-import { ValidateAddressOption, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
+import { UploadImage } from "../../utils/UploadUtils"
+import { ValidateAddressOption, ValidateEmail, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
 import { Form } from "../Form"
 
 export const AddListingForVehicles = () =>{
     const {            addVehicleDataState,
-        addVehicleDataStateDispatch} = useContext(UploadContext);
+        addVehicleDataStateDispatch,
+        imagePositions} = useContext(UploadContext);
 
     const setPrice = (value)=>{
         setAddVehicleDataState(value,'price',addVehicleDataStateDispatch)
@@ -38,13 +40,20 @@ export const AddListingForVehicles = () =>{
     }
 
 
-    const [optionErrors,setOptionErrors] = useState(["","","",""])
+    const [optionErrors,setOptionErrors] = useState(vehicleErrors)
+
+    const setEmail = (value) =>{
+        setAddVehicleDataState(value,'email',addVehicleDataStateDispatch)
+    }
 
     const submitOptions = () =>{
-        const foundErrors= validateOptions(options,setOptionErrors);
+        const foundErrors= validateOptions(options,setOptionErrors,vehicleErrors);
         if(!foundErrors)
         {
-            console.log(addVehicleDataState);
+            const imageURLs= UploadImage(imagePositions);
+            imageURLs.then(data=>{
+             console.log(data);
+            })
         }
 
     }
@@ -57,8 +66,9 @@ export const AddListingForVehicles = () =>{
             value: addVehicleDataState.vehicleManufacturer,
             onChange: setVehicleManufacturers,
             error: validationErrors.selectError,
-            errorToDisplay: optionErrors[0],
-            validatorFunction: ValidateSelectOption
+            errorToDisplay: optionErrors.manufacturers,
+            validatorFunction: ValidateSelectOption,
+            name:'manufacturers'
         },
         {
             inputType: 'select',
@@ -67,8 +77,9 @@ export const AddListingForVehicles = () =>{
             value: addVehicleDataState.fuelType,
             onChange: setFuelTypes,
             error: validationErrors.selectError,
-            errorToDisplay: optionErrors[1],
-            validatorFunction: ValidateSelectOption
+            errorToDisplay: optionErrors.fuelTypes,
+            validatorFunction: ValidateSelectOption,
+            name:'fuelTypes'
         },
         {
             inputType: 'select',
@@ -77,8 +88,9 @@ export const AddListingForVehicles = () =>{
             value: addVehicleDataState.vehicleType,
             onChange: setVehicleTypes,
             error: validationErrors.selectError,
-            errorToDisplay: optionErrors[2],
-            validatorFunction: ValidateSelectOption
+            errorToDisplay: optionErrors.vehicleType,
+            validatorFunction: ValidateSelectOption,
+            name:'vehicleType'
         },
         {
             inputType: 'mapsAutocomplete',
@@ -86,8 +98,9 @@ export const AddListingForVehicles = () =>{
             value: addVehicleDataState.address,
             onChange: setAddress,
             error: validationErrors.addressError,
-            errorToDisplay: optionErrors[3],
-            validatorFunction: ValidateAddressOption
+            errorToDisplay: optionErrors.address,
+            validatorFunction: ValidateAddressOption,
+            name: 'address'
         },
         {
             inputType: 'slider',
@@ -112,6 +125,16 @@ export const AddListingForVehicles = () =>{
             onChange: setMileage,
             minValue: 0,
             maxValue: 100000
+        },
+        {
+            inputType: 'textInput',
+            label: 'Email',
+            value: addVehicleDataState.email,
+            onChange: setEmail,
+            error: validationErrors.emailError,
+            errorToDisplay: optionErrors.email,
+            validatorFunction: ValidateEmail,
+            name: 'email'
         },
         {
             inputType: 'button',

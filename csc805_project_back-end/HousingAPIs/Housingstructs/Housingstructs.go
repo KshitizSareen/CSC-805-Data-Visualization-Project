@@ -24,29 +24,30 @@ type HouseFilters struct {
 
 type House struct {
 	Index                 int
-	Price                 int
-	Type                  int
-	SqFeet                int
-	Beds                  int
-	Baths                 int
-	CatsAllowed           int
-	DogsAllowed           int
-	SmokingAllowed        int
-	WheelchairAccess      int
-	ElectricVehicleCharge int
-	ComesFurnished        int
+	Price                 int `json:"price"`
+	Type                  int `json:"type"`
+	SqFeet                int `json:"sqFeet"`
+	Beds                  int `json:"beds"`
+	Baths                 int `json:"baths"`
+	CatsAllowed           int `json:"catsAllowed"`
+	DogsAllowed           int `json:"dogsAllowed"`
+	SmokingAllowed        int `json:"smokingAllowed"`
+	WheelchairAccess      int `json:"wheelchairAccess"`
+	ElectricVehicleCharge int `json:"electricVehicleCharge"`
+	ComesFurnished        int `json:"comesFurnished"`
 	LaundryOptions        string
 	ParkingOptions        string
 	Image_URL             string
 	Description           string
-	Lat                   float64
-	Long                  float64
-	Neighbourhood         string
-	City                  string
-	County                string
-	State                 string
-	Address               string
-	Type_Category         string
+	Lat                   float64 `json:"lat"`
+	Long                  float64 `json:"long"`
+	Neighbourhood         string  `json:"neighbourhood"`
+	City                  string  `json:"city"`
+	County                string  `json:"county"`
+	State                 string  `json:"state"`
+	Address               string  `json:"address"`
+	Type_Category         string  `json:"typeCategory"`
+	Email                 string  `json:"email"`
 }
 
 type HouseGroup struct {

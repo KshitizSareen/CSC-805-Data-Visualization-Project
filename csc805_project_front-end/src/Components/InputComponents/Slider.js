@@ -8,7 +8,7 @@ export const InputSlider = ({value,label,onChange,minValue,maxValue}) =>{
     return(
         <div style={{
             width: '90%',
-            marginBottom: '5%'
+            marginBottom: '1%'
         }}>
             {parse(label)}
             <Slider value={value} valueLabelDisplay="auto"

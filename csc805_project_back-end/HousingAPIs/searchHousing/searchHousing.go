@@ -27,7 +27,7 @@ func HandleLambdaEvent(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	var house Housingstructs.House
 	var houses []Housingstructs.House
 	for query.Next() {
-		query.Scan(&house.Index, &house.Price, &house.Type, &house.SqFeet, &house.Beds, &house.Baths, &house.CatsAllowed, &house.DogsAllowed, &house.SmokingAllowed, &house.WheelchairAccess, &house.ElectricVehicleCharge, &house.ComesFurnished, &house.LaundryOptions, &house.ParkingOptions, &house.Image_URL, &house.Description, &house.Lat, &house.Long, &house.Neighbourhood, &house.City, &house.County, &house.State, &house.Address, &house.Type_Category)
+		query.Scan(&house.Index, &house.Price, &house.Type, &house.SqFeet, &house.Beds, &house.Baths, &house.CatsAllowed, &house.DogsAllowed, &house.SmokingAllowed, &house.WheelchairAccess, &house.ElectricVehicleCharge, &house.ComesFurnished, &house.LaundryOptions, &house.ParkingOptions, &house.Image_URL, &house.Description, &house.Lat, &house.Long, &house.Neighbourhood, &house.City, &house.County, &house.State, &house.Address, &house.Type_Category, &house.Email)
 		houses = append(houses, house)
 	}
 	defer query.Close()

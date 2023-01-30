@@ -15,13 +15,11 @@ export const MapsAutocomplete = ({label,value,onChange,error}) =>{
 return(
 <div style={{
   width: '90%',
-  marginBottom: '5%',
+  marginBottom: '1%',
   display: 'flex',
   flexDirection: 'column'
 }}> 
-<label style={{
-  alignSelf: 'flex-start'
-}}>{label}</label>
+<label>{label}</label>
   <GooglePlacesAutocomplete
   apiKey="AIzaSyCvu1jFUG-Kyy33CHp0lKuVy2mU_zDX3zc"
   selectProps={{

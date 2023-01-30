@@ -4,7 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 export const Select = ({options,label,onChange,value,error})=>{
     return(
         <div style={{
-            marginBottom: '5%',
+            marginBottom: '1%',
             width: '90%',
             display: 'flex',
             flexDirection: 'column'

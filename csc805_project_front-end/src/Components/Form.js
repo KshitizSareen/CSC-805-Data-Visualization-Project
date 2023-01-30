@@ -4,6 +4,7 @@ import { MultipleSelect } from "./InputComponents/MultipleSelect"
 import { RangeSlider } from "./InputComponents/RangeSlider";
 import { Select } from "./InputComponents/Select";
 import { InputSlider } from "./InputComponents/Slider";
+import { TextInput } from "./InputComponents/TextInput";
 
 const getComponent = (inputType) => {
     const components = {
@@ -12,7 +13,8 @@ const getComponent = (inputType) => {
         'button': InputButton,
         'mapsAutocomplete' : MapsAutocomplete,
         'select': Select,
-        'slider': InputSlider
+        'slider': InputSlider,
+        'textInput': TextInput
     }
     return components[inputType];
 }
@@ -24,7 +26,7 @@ export const Form = ({ options }) => {
                 options.map((option) => {
                     const { inputType, options, label, placeHolder, 
                         onChange, value,SuperSricpt,
-                        minValue,maxValue,onClick,error,
+                        minValue,maxValue,onClick,
                         errorToDisplay} = option;
                     const Component = getComponent(inputType);
                     return <Component 

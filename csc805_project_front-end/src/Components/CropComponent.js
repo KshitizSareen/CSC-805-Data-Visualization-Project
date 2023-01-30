@@ -18,6 +18,8 @@ export const getCroppedImg = async (imageSrc, crop) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
 
+    
+
     /* setting canvas width & height allows us to 
     resize from the original image resolution */
     canvas.width = 250
@@ -42,7 +44,7 @@ export const getCroppedImg = async (imageSrc, crop) => {
     })
 }
 
-export const CropComponent = ({imgUrl,setShowCropper, setImageURL,width,height,onCropComplete}) =>{
+export const CropComponent = ({imgUrl,width,height,onCropComplete}) =>{
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [croppedAreaPixels,setCroppedAreaPixels] = useState();
     

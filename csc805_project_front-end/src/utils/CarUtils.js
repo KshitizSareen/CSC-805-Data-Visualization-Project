@@ -87,3 +87,11 @@ export const vehicleTypes = [
   }
 
 ]
+
+export const vehicleErrors=        {
+    manufacturers:"",
+    fuelTypes:"",
+    vehicleType: "",
+    address: "",
+    email : ""
+  }

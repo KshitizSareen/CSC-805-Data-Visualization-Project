@@ -85,3 +85,9 @@
         }
     })
 }
+
+export const homeErrors=        {
+  selectHousing:"",
+  address:"",
+  email: "",
+}

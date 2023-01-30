@@ -5,7 +5,8 @@ export const initialAddVehicleDataState ={
     price: 20000,
     year: 2000,
     mileage: 20000,
-    address: null
+    address: null,
+    email : ""
 }
 
 export const AddVehiclesDataStateReducer = (state,action) =>{

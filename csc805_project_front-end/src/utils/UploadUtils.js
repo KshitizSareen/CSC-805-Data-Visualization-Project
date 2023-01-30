@@ -5,8 +5,8 @@ import uuid from 'react-uuid';
 const config = {
     bucketName: 'csc805-data-storage-bucket',
     region: 'us-west-1',
-    accessKeyId: 'AKIA6N5QQL7VUGPTFI5E',
-    secretAccessKey: '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',
+    accessKeyId: 'REACT_APP_ACCESS_KEY_ID',
+    secretAccessKey: 'REACT_APP_SECRET_ACCESS_KEY_ID/',
 }
 
 const ReactS3Client = new S3(config);

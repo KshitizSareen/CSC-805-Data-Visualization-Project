@@ -1,11 +1,12 @@
 import { ImageSelector } from "./InputComponents/ImageSelector"
 
-export const ImageCards = ({imageUrls}) =>{
-    const {data,isArray,style,width,height,image,position,key} = imageUrls;
+export const ImageCards = ({imageUrls,Component,imagePositions}) =>{
+    const {data,isArray,style,width,height,image,key} = imageUrls;
     if(!isArray)
     {
+        console.log(imagePositions);
         return(
-            <ImageSelector key={key} width={width} height={height} index={key}/>
+            <Component key={key} width={width} height={height} index={key} image={image} imageURL={imagePositions!==undefined && key < imagePositions.length ? imagePositions[key].imageURL : ""}/>
         )
     }
     else
@@ -17,7 +18,7 @@ export const ImageCards = ({imageUrls}) =>{
             {
                 data.map((elem)=>{
                     return(
-                        <ImageCards imageUrls={elem} />
+                        <ImageCards imageUrls={elem} Component={Component} imagePositions={imagePositions}/>
                     )
                 })
             }

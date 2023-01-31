@@ -11,6 +11,7 @@ import CarFiltersReducer, { initialCarFilters } from './State/CarFiltersState';
 import ChartsComponent from './Components/ChartsComponent';
 import { UploadListing } from './Components/UploadListing';
 import { CropComponent } from './Components/CropComponent';
+import { DisplayListing } from './Components/DisplayListing';
 
 function App() {
   
@@ -64,6 +65,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/charts" element={<ChartsComponent/>} />
           <Route path="/uploadlisting" element={<UploadListing/>}/>
+          <Route path="/displaylisting" element={<DisplayListing/>}/>
         </Routes>
     </AppContext.Provider>
     </div>

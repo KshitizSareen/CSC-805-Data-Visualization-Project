@@ -22,7 +22,9 @@ export const ImageSelector = ({width,height,index}) =>{
     const onCropComplete = async (croppedAreaPixels) => {
         const croppedImage = await getCroppedImg(
             imageURL,
-            croppedAreaPixels
+            croppedAreaPixels,
+            width/50*window.parent.innerWidth,
+            height/50*window.parent.innerHeight
         )
         const croppedURL = URL.createObjectURL(croppedImage);
         setImageURL(croppedURL);
@@ -72,8 +74,8 @@ export const ImageSelector = ({width,height,index}) =>{
                 showCropper ? <CropComponent imgUrl={imageURL} 
                 setShowCropper={setShowCropper} 
                 setImageURL={setImageURL} 
-                width={width/100*window.parent.innerWidth} 
-                height={height/100*window.parent.innerHeight} 
+                width={width/50*window.parent.innerWidth} 
+                height={height/50*window.parent.innerHeight} 
                 showHideForm={showHideForm}
                 onCropComplete={onCropComplete}/> :
                 null

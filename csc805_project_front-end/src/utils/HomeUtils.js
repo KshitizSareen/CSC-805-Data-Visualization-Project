@@ -1,27 +1,27 @@
 
  export const HomeOptions = [
     {
-      name: "catsAllowed",
+      name: "CatsAllowed",
       label: "Cats Allowed",
     },
     {
-      name: "dogsAllowed",
+      name: "DogsAllowed",
       label: "Dogs Allowed",
     },
     {
-      name: "smokingAllowed",
+      name: "SmokingAllowed",
       label: "Smoking Allowed",
     },
     {
-      name: "wheelchairAccess",
+      name: "WheelchairAccess",
       label: "Wheelchair Access",
     },
     {
-      name: "electricVehicleCharge",
+      name: "ElectricVehicleCharge",
       label: "Electric Vehicle Charge",
     },
     {
-      name: "comesFurnished",
+      name: "ComesFurnished",
       label: "Comes Furnished",
     }
   ]

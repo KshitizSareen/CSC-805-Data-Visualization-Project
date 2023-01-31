@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import UploadContext from "../../Context/UploadContext"
 import { fuelTypes, Manufacturers, setAddVehicleDataState, vehicleErrors, vehicleTypes } from "../../utils/CarUtils"
 import { HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
-import { UploadImage } from "../../utils/UploadUtils"
+import { UploadImage, UploadVehicleData } from "../../utils/UploadUtils"
 import { ValidateAddressOption, ValidateEmail, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
 import { Form } from "../Form"
 
@@ -52,7 +52,10 @@ export const AddListingForVehicles = () =>{
         {
             const imageURLs= UploadImage(imagePositions);
             imageURLs.then(data=>{
-             console.log(data);
+             console.log(addVehicleDataState);
+             UploadVehicleData(addVehicleDataState,"insert-vehicle",data).then(res=>{
+                alert(res);
+            })
             })
         }
 

@@ -21,7 +21,6 @@ export const imageURLSState = {
                     width: 30,
                     height: 33,
                     image: "",
-                    position: [0,0],
                     key: 0
                 },
                 {
@@ -38,7 +37,6 @@ export const imageURLSState = {
                             width: 20,
                             height: 16.5,
                             image: "",
-                            position: [0,0,0],
                             key: 1
                         },
                         {
@@ -46,7 +44,6 @@ export const imageURLSState = {
                             width: 20,
                             height: 16.5,
                             image: "",
-                            position: [0,0,1],
                             key: 2
                         },
                     ]
@@ -76,7 +73,6 @@ export const imageURLSState = {
                             width: 20,
                             height: 16.5,
                             image: "",
-                            position: [1,0,0],
                             key: 3
                         },
                         {
@@ -84,7 +80,6 @@ export const imageURLSState = {
                             width: 20,
                             height: 16.5,
                             image: "",
-                            position: [1,0,1],
                             key: 4
                         },
                     ]
@@ -94,7 +89,6 @@ export const imageURLSState = {
                     width: 30,
                     height: 33,
                     image: "",
-                    position: [1,1],
                     key: 5
                 }
             ]
@@ -122,7 +116,6 @@ export const imageURLSState = {
                             width: 25,
                             height: 16.5,
                             image: "",
-                            position: [1,0,0],
                             key: 6
                         },
                         {
@@ -130,7 +123,6 @@ export const imageURLSState = {
                             width: 25,
                             height: 16.5,
                             image: "",
-                            position: [1,0,1],
                             key: 7
                         },
                     ]
@@ -149,7 +141,6 @@ export const imageURLSState = {
                             width: 25,
                             height: 16.5,
                             image: "",
-                            position: [1,0,0],
                             key: 8
                         },
                         {
@@ -157,7 +148,6 @@ export const imageURLSState = {
                             width: 25,
                             height: 16.5,
                             image: "",
-                            position: [1,0,1],
                             key: 9
                         },
                     ]

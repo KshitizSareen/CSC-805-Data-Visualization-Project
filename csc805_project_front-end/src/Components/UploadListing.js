@@ -5,6 +5,7 @@ import { AddVehiclesDataStateReducer, initialAddVehicleDataState } from "../Stat
 import { imageURLSState, initialImagePositions } from "../State/ImageURLsState"
 import { AddListingForms} from "./AddListingForms"
 import { ImageCards } from "./ImageCards"
+import { ImageSelector } from "./InputComponents/ImageSelector"
 
 
 export const UploadListing = () => {
@@ -32,7 +33,7 @@ export const UploadListing = () => {
         width: '100vw',
         height: '100vh',
     }}>
-        <ImageCards imageUrls={imageURLSState}/>
+        <ImageCards imageUrls={imageURLSState} Component={ImageSelector}/>
         <AddListingForms/>
     </div>
     </UploadContext.Provider>

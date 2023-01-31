@@ -8,6 +8,6 @@ type ImageObject struct {
 }
 
 type ImageFilters struct {
-	Type      string `json:"type"`
+	Type      string `json:"category"`
 	ListingID int    `json:"listingID"`
 }

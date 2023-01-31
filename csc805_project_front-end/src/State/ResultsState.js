@@ -5,6 +5,7 @@ export default function ResultsReducer(state, action) {
   switch (action.type) {
     // Do something here based on the different types of actions
     case 'changeResultsState': {
+      console.log(action.results);
       return action.results
     }
 

@@ -1,17 +1,11 @@
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useState } from 'react';
-import axios from 'axios';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
-import Geocode from "react-geocode";
 
-Geocode.setApiKey("AIzaSyCvu1jFUG-Kyy33CHp0lKuVy2mU_zDX3zc");
 
 
 
 export const MapsAutocomplete = ({label,value,onChange,error}) =>{
-
+  console.log(process.env.REACT_APP_MAP_KEY);
 return(
 <div style={{
   width: '90%',
@@ -21,7 +15,7 @@ return(
 }}> 
 <label>{label}</label>
   <GooglePlacesAutocomplete
-  apiKey="AIzaSyCvu1jFUG-Kyy33CHp0lKuVy2mU_zDX3zc"
+  apiKey={process.env.REACT_APP_MAP_KEY}
   selectProps={{
     value: value,
     onChange: (value)=>{

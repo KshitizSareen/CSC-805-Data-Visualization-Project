@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import UploadContext from "../../Context/UploadContext"
 import { homeErrors, HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
-import { UploadImage } from "../../utils/UploadUtils"
+import { UploadHomeData, UploadImage } from "../../utils/UploadUtils"
 import { ValidateAddressOption, ValidateEmail, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
 import { Form } from "../Form"
 
@@ -51,7 +51,9 @@ export const AddListingForHomes = () =>{
         {
            const imageURLs= UploadImage(imagePositions);
            imageURLs.then(data=>{
-            console.log(data);
+            UploadHomeData(addHomeDataState,"insert-house",data).then(res=>{
+                alert(res);
+            })
            })
         }
     }

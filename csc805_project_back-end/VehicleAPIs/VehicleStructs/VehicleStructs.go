@@ -18,37 +18,37 @@ type VehicleFilters struct {
 
 type Vehicle struct {
 	Index                 int
-	Price                 int    `json:"price"`
-	Year                  int    `json:"year"`
-	Manufacturer          string `json:"manufacturer"`
+	Price                 int    `json:"Price"`
+	Year                  int    `json:"Year"`
+	Manufacturer          string `json:"Manufacturer"`
 	Model                 string
 	Condition             string
 	Cylinders             string
-	Fuel                  string `json:"fuelType"`
-	Odometer              int    `json:"mileage"`
+	Fuel                  string `json:"Fuel"`
+	Odometer              int    `json:"Odometer"`
 	Title_Status          string
 	Transmission          string
 	Drive                 string
-	Type                  string `json:"vehicleType"`
+	Type                  string `json:"Type"`
 	Image_URL             string
 	Description           string
-	Lat                   float64 `json:"lat"`
-	Long                  float64 `json:"long"`
-	Manufacturer_Category int     `json:"manufacturerCategory"`
+	Lat                   float64 `json:"Lat"`
+	Long                  float64 `json:"Long"`
+	Manufacturer_Category int     `json:"Manufacturer_Category"`
 	Model_Category        int
 	Condition_Category    int
 	Cylinders_Category    int
-	Fuel_Category         int `json:"fuelCategory"`
+	Fuel_Category         int `json:"Fuel_Category"`
 	Title_Status_Category int
 	Transmission_Category int
 	Drive_Category        int
-	Type_Category         int    `json:"typeCategory"`
-	Neighbourhood         string `json:"neighbourhood"`
-	City                  string `json:"city"`
-	County                string `json:"county"`
-	State                 string `json:"state"`
-	Address               string `json:"address"`
-	Email                 string `json:"email"`
+	Type_Category         int    `json:"Type_Category"`
+	Neighbourhood         string `json:"Neighbourhood"`
+	City                  string `json:"City"`
+	County                string `json:"County"`
+	State                 string `json:"State"`
+	Address               string `json:"Address"`
+	Email                 string `json:"Email"`
 }
 
 type VehicleGroup struct {

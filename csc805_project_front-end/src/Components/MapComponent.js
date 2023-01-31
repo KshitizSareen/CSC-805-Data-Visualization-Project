@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import DeckGL from "deck.gl";
 import { Map } from "react-map-gl";
 import { IconLayer } from '@deck.gl/layers';
@@ -7,6 +7,7 @@ import { GetMinMaxCoordinates } from "../utils/MapUtils";
 import { InputButton } from "./InputComponents/Buttons";
 import { FaChartBar, FaPlus} from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import { getImages } from "../utils/UploadUtils";
 
 const ICON_MAPPING = {
   marker: { x: 0, y: 0, width: 128, height: 128, mask: true }
@@ -22,6 +23,8 @@ export default function MapComponent() {
     viewDispatch
   } = useContext(AppContext);
 
+  const [imageUrlPositions,setImageUrlPositions] = useState([]);
+
   const navigate = useNavigate();
 
   const navigateToCharts = () =>{
@@ -30,6 +33,17 @@ export default function MapComponent() {
 
   const navigateToUploadComponent = () =>{
     navigate("/uploadlisting");
+  }
+
+  const navigateToDisplayComponent = async (listing) =>{
+    const resImages = await getImages("Home",listing.Index,"search-images");
+    console.log(resImages);
+    navigate("/displaylisting",{
+      state: {
+        listing,
+        resImages
+      }
+    });
   }
 
 
@@ -47,7 +61,7 @@ export default function MapComponent() {
         sizeScale: 15,
         getColor: [255, 255, 255],
         onClick: (info) => {
-
+          navigateToDisplayComponent(info.object);
         }
       }
     )

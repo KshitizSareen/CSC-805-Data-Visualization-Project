@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import parse from 'html-react-parser';
 
 
-export const TextInput = ({error,label,value,onChange}) =>{
+export const TextInput = ({error,label,value,onChange,disabled}) =>{
     return(
         <div style={{
             marginBottom: '1%',
@@ -12,6 +12,8 @@ export const TextInput = ({error,label,value,onChange}) =>{
         }}>
       <TextField id="outlined-basic" label={label} variant="outlined" value={value} onChange={(event)=>{
         onChange(event.target.value);
+      }}           InputProps={{
+        readOnly: disabled ? true : false,
       }}/>
       <label style={{
                     color: 'red',

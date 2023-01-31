@@ -8,7 +8,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export const MultipleSelect = ({ options, label, placeholder, onChange,value,error }) => {
+export const MultipleSelect = ({ options, label, placeholder, onChange,value,error,disabled }) => {
     return (
         <div style={{
             marginBottom: '1%',
@@ -40,6 +40,7 @@ export const MultipleSelect = ({ options, label, placeholder, onChange,value,err
                 onChange(value);
             }}
             value={value}
+            readOnly={disabled ? true : false}
         />
         <label style={{
                     color: 'red',

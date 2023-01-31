@@ -5,11 +5,20 @@ import { HomeOptions, HousingTypeValues } from "../../utils/HomeUtils"
 import { SetMapData } from "../../utils/MapUtils"
 import { Form } from "../Form"
 
+const requestMap={
+  "CatsAllowed": "catsAllowed",
+  "DogsAllowed": "dogsAllowed",
+  "SmokingAllowed": "smokingAllowed",
+  "WheelchairAccess": "wheelchairAccess",
+  "ElectricVehicleCharge": "electricVehicleCharge",
+  "ComesFurnished": "comesFurnished"
+}
 
 const changeAmentityValues = (amenities, value, amenityValues) => {
   for (const amenity of amenities) {
     const { name } = amenity;
-    amenityValues[name] = value;
+    const property = requestMap[name];
+    amenityValues[property] = value;
   }
 }
 

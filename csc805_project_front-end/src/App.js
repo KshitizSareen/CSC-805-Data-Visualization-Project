@@ -10,18 +10,16 @@ import HomeFiltersReducer, { initialHomeFilters } from './State/HomeFiltersState
 import CarFiltersReducer, { initialCarFilters } from './State/CarFiltersState';
 import ChartsComponent from './Components/ChartsComponent';
 import { UploadListing } from './Components/UploadListing';
-import { CropComponent } from './Components/CropComponent';
 import { DisplayListing } from './Components/DisplayListing';
 
 function App() {
-  
-  const [viewState,viewDispatch] = useReducer(MapReducer,initialViewState);
+
+  const [viewState, viewDispatch] = useReducer(MapReducer, initialViewState);
   const [mapState, mapDispatch] = useReducer(MapReducer, initialMapState)
   const [resultsState, resultsDispatch] = useReducer(ResultsReducer, initialResultsState)
   const [homeFiltersState, homeFiltersDispatch] = useReducer(HomeFiltersReducer, initialHomeFilters)
   const [carFiltersState, carFiltersDispatch] = useReducer(CarFiltersReducer, initialCarFilters);
-  const [initialCategory,setInitialCategory] = useState("1");
-  const [imageURL,setImageURL] = useState("");
+  const [initialCategory, setInitialCategory] = useState("1");
 
   const setInitialMapData = () => {
     const minMaxCoordinates = GetMinMaxCoordinates(initialViewState);
@@ -29,7 +27,7 @@ function App() {
       ...initialHomeFilters,
       ...minMaxCoordinates
     }
-    SetMapData(initialFilters, resultsDispatch,"search-houses");
+    SetMapData(initialFilters, resultsDispatch, "search-houses");
     homeFiltersDispatch({
       type: 'changeHomeFiltersState',
       data: minMaxCoordinates
@@ -47,27 +45,27 @@ function App() {
 
   return (
     <div className='App'>
-    <AppContext.Provider value={{
-      mapState,
-      mapDispatch,
-      resultsState,
-      resultsDispatch,
-      homeFiltersState,
-      homeFiltersDispatch,
-      carFiltersState,
-      carFiltersDispatch,
-      initialCategory,
-      setInitialCategory,
-      viewState,
-      viewDispatch
-    }}>
+      <AppContext.Provider value={{
+        mapState,
+        mapDispatch,
+        resultsState,
+        resultsDispatch,
+        homeFiltersState,
+        homeFiltersDispatch,
+        carFiltersState,
+        carFiltersDispatch,
+        initialCategory,
+        setInitialCategory,
+        viewState,
+        viewDispatch
+      }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/charts" element={<ChartsComponent/>} />
-          <Route path="/uploadlisting" element={<UploadListing/>}/>
-          <Route path="/displaylisting" element={<DisplayListing/>}/>
+          <Route path="/charts" element={<ChartsComponent />} />
+          <Route path="/uploadlisting" element={<UploadListing />} />
+          <Route path="/displaylisting" element={<DisplayListing />} />
         </Routes>
-    </AppContext.Provider>
+      </AppContext.Provider>
     </div>
   );
 }

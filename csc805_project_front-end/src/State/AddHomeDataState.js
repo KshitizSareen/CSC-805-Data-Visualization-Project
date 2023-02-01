@@ -1,4 +1,4 @@
-export const initialAddHomeDataState ={
+export const initialAddHomeDataState = {
     housingTypes: null,
     housingOptions: [],
     price: 2000,
@@ -6,11 +6,11 @@ export const initialAddHomeDataState ={
     noOfBeds: 2,
     noOfBaths: 2,
     address: null,
-    email:"",
+    email: "",
 }
 
-export const AddHomesDataStateReducer = (state,action) =>{
-    switch (action.type){
+export const AddHomesDataStateReducer = (state, action) => {
+    switch (action.type) {
         case 'changeAddHomeDataState': {
             return {
                 ...state,

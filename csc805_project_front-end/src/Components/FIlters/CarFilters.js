@@ -14,31 +14,31 @@ export default function CarFilters() {
 
 
   const setManufacturers = (Manufacturers) => {
-    changeMultipleOptionsValue(Manufacturers,'id',carFiltersDispatch,'changeCarFiltersState','manufacturers','manufacturersArray')
+    changeMultipleOptionsValue(Manufacturers, 'id', carFiltersDispatch, 'changeCarFiltersState', 'manufacturers', 'manufacturersArray')
   }
 
-  const setFuelTypes = (fuelTypes) =>{
-    changeMultipleOptionsValue(fuelTypes,'value',carFiltersDispatch,'changeCarFiltersState','fuelTypes','fuelTypesArray')
+  const setFuelTypes = (fuelTypes) => {
+    changeMultipleOptionsValue(fuelTypes, 'value', carFiltersDispatch, 'changeCarFiltersState', 'fuelTypes', 'fuelTypesArray')
   }
 
-  const setVehicleTypes = (vehicleTypes) =>{
-    changeMultipleOptionsValue(vehicleTypes,'value',carFiltersDispatch,'changeCarFiltersState','vehicleTypes','vehicleTypesArray')
+  const setVehicleTypes = (vehicleTypes) => {
+    changeMultipleOptionsValue(vehicleTypes, 'value', carFiltersDispatch, 'changeCarFiltersState', 'vehicleTypes', 'vehicleTypesArray')
   }
 
-  const setCarsPrice = (minValue,maxValue) => {
-    changeRangeValue('minPrice','maxPrice',minValue,maxValue,carFiltersDispatch,'changeCarFiltersState')
+  const setCarsPrice = (minValue, maxValue) => {
+    changeRangeValue('minPrice', 'maxPrice', minValue, maxValue, carFiltersDispatch, 'changeCarFiltersState')
   }
 
-  const setCarsYear = (minValue,maxValue) => {
-    changeRangeValue('minYear','maxYear',minValue,maxValue,carFiltersDispatch,'changeCarFiltersState')
+  const setCarsYear = (minValue, maxValue) => {
+    changeRangeValue('minYear', 'maxYear', minValue, maxValue, carFiltersDispatch, 'changeCarFiltersState')
   }
 
-  const setCarsMileage = (minValue,maxValue) => {
-    changeRangeValue('minMileage','maxMileage',minValue,maxValue,carFiltersDispatch,'changeCarFiltersState')
+  const setCarsMileage = (minValue, maxValue) => {
+    changeRangeValue('minMileage', 'maxMileage', minValue, maxValue, carFiltersDispatch, 'changeCarFiltersState')
   }
 
-  const searchVehicles = ()=>{
-    SetMapData(carFiltersState,resultsDispatch,"search-vehicles");
+  const searchVehicles = () => {
+    SetMapData(carFiltersState, resultsDispatch, "search-vehicles");
   }
 
 
@@ -99,6 +99,6 @@ export default function CarFilters() {
 
   ]
   return (
-    <Form options={options}/>
+    <Form options={options} />
   )
 }

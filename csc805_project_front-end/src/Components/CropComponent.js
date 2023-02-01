@@ -1,8 +1,8 @@
-import { useLocation, useNavigate } from "react-router-dom"
-import { useContext, useState } from "react";
+import { useState } from "react";
 import 'react-image-crop/dist/ReactCrop.css'
 import Cropper from 'react-easy-crop';
 import { InputButton } from "./InputComponents/Buttons";
+import '../styles/cropper.css';
 
 const createImage = (url) =>
     new Promise((resolve, reject) => {
@@ -13,12 +13,12 @@ const createImage = (url) =>
         image.src = url
     })
 
-export const getCroppedImg = async (imageSrc, crop,width,height) => {
+export const getCroppedImg = async (imageSrc, crop, width, height) => {
     const image = await createImage(imageSrc)
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
 
-    
+
 
     /* setting canvas width & height allows us to 
     resize from the original image resolution */
@@ -44,58 +44,31 @@ export const getCroppedImg = async (imageSrc, crop,width,height) => {
     })
 }
 
-export const CropComponent = ({imgUrl,width,height,onCropComplete}) =>{
+export const CropComponent = ({ imgUrl, width, height, onCropComplete }) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 })
-    const [croppedAreaPixels,setCroppedAreaPixels] = useState();
-    
-    return(
-        <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            width: '100vw',
-            height: '100vh',
-            backgroundColor: 'white'
-        }}>
-        <div style={{
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: '80px',
-        }}>
-         <Cropper
-                image={imgUrl}
-                crop={crop}
-                onCropChange={setCrop}
-                onCropComplete={(_,croppedAreaPixels)=>{
-                    setCroppedAreaPixels(croppedAreaPixels);
-                }}
-                style={{
-                    alignSelf: 'center',
-                    justifyContent: 'center',
-                }}
-                cropSize={{
-                    width: width,
-                    height: height
-                }}
-            />
-      </div>
-      <div style={{
-          position: 'absolute',
-          bottom: '20px',
-          left: '50%',
-          width: '50%',
-          height: '40px',
-          display: 'flex',
-          alignItems: 'center'
-      }}>
-      <InputButton label="Crop Image" onClick={()=>{
-        onCropComplete(croppedAreaPixels);
-      }}/>
-      </div>
-      </div>
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState();
+
+    return (
+        <div className="cropContainer">
+            <div className="cropCanvas">
+                <Cropper
+                    image={imgUrl}
+                    crop={crop}
+                    onCropChange={setCrop}
+                    onCropComplete={(_, croppedAreaPixels) => {
+                        setCroppedAreaPixels(croppedAreaPixels);
+                    }}
+                    cropSize={{
+                        width: width,
+                        height: height
+                    }}
+                />
+            </div>
+            <div className="cropButton">
+                <InputButton label="Crop Image" onClick={() => {
+                    onCropComplete(croppedAreaPixels);
+                }} />
+            </div>
+        </div>
     )
 }

@@ -1,18 +1,17 @@
 import React, { useContext, useState } from "react"
-import { FaCamera, FaImage } from "react-icons/fa"
-import { useNavigate } from "react-router-dom";
+import { FaCamera } from "react-icons/fa"
 import UploadContext from "../../Context/UploadContext";
 import { CropComponent, getCroppedImg } from "../CropComponent";
 
-export const ImageSelector = ({width,height,index}) =>{
-    
-    const [imageURL,setImageURL] = useState("");
+export const ImageSelector = ({ width, height, index }) => {
+
+    const [imageURL, setImageURL] = useState("");
     const fileInput = React.useRef(null);
-    const onInputClick = () =>{
+    const onInputClick = () => {
         fileInput.current.click();
     }
-    
-    const [showCropper,setShowCropper] = useState(false);
+
+    const [showCropper, setShowCropper] = useState(false);
     const {
         showHideForm,
         imagePositions,
@@ -23,8 +22,8 @@ export const ImageSelector = ({width,height,index}) =>{
         const croppedImage = await getCroppedImg(
             imageURL,
             croppedAreaPixels,
-            width/50*window.parent.innerWidth,
-            height/50*window.parent.innerHeight
+            width / 50 * window.parent.innerWidth,
+            height / 50 * window.parent.innerHeight
         )
         const croppedURL = URL.createObjectURL(croppedImage);
         setImageURL(croppedURL);
@@ -33,52 +32,50 @@ export const ImageSelector = ({width,height,index}) =>{
         const newImagePositions = [...imagePositions];
         newImagePositions[index] = croppedURL;
         setImagePositions(newImagePositions);
-        console.log(newImagePositions);
     }
 
-    const onChange=(event)=>{
-        console.log("Test");
+    const onChange = (event) => {
         if (event.target.files && event.target.files[0]) {
             setImageURL(URL.createObjectURL(event.target.files[0]));
             setShowCropper(true);
             showHideForm(false);
-            document.getElementById('file_input'+index).value = null;
+            document.getElementById('file_input' + index).value = null;
+        }
     }
-}
 
-    return(
+    return (
         <>
-        <div style={{
-            width: width+'vw',
-            height: height+'vh',
-            borderColor: "#fce6c2",
-            border: '5px solid rgba(0, 0, 0, 0.05)', 
-            justifyContent: 'center',
-            alignItems: 'center',
-            display: showCropper ? 'none' : 'flex'
-        }} onClick={onInputClick}>
-            <input id={"file_input"+index} type="file" ref={fileInput} style={{
-                display: 'none'
-            }} accept="image/*" onChange={onChange}/>
+            <div style={{
+                width: width + 'vw',
+                height: height + 'vh',
+                borderColor: "#fce6c2",
+                border: '5px solid rgba(0, 0, 0, 0.05)',
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: showCropper ? 'none' : 'flex'
+            }} onClick={onInputClick}>
+                <input id={"file_input" + index} type="file" ref={fileInput} style={{
+                    display: 'none'
+                }} accept="image/*" onChange={onChange} />
+                {
+                    imageURL !== "" ?
+                        <img src={imageURL} style={{
+                            width: '100%',
+                            height: '100%',
+                        }} alt="" />
+                        :
+                        <FaCamera size={1.5 * Math.max(width, height)} color="#fce6c2" />
+                }
+            </div>
             {
-                imageURL !== "" ?
-                <img src={imageURL} style={{
-                    width: '100%',
-                    height: '100%',
-                }} alt=""/>
-                :
-            <FaCamera size={1.5*Math.max(width,height)} color="#fce6c2"/>
-            }
-        </div>
-        {
-                showCropper ? <CropComponent imgUrl={imageURL} 
-                setShowCropper={setShowCropper} 
-                setImageURL={setImageURL} 
-                width={width/50*window.parent.innerWidth} 
-                height={height/50*window.parent.innerHeight} 
-                showHideForm={showHideForm}
-                onCropComplete={onCropComplete}/> :
-                null
+                showCropper ? <CropComponent imgUrl={imageURL}
+                    setShowCropper={setShowCropper}
+                    setImageURL={setImageURL}
+                    width={width / 50 * window.parent.innerWidth}
+                    height={height / 50 * window.parent.innerHeight}
+                    showHideForm={showHideForm}
+                    onCropComplete={onCropComplete} /> :
+                    null
             }
         </>
     )

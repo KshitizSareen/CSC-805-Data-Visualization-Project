@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import DeckGL from "deck.gl";
 import { Map } from "react-map-gl";
 import { IconLayer } from '@deck.gl/layers';
 import AppContext from '../Context/AppContext';
 import { GetMinMaxCoordinates } from "../utils/MapUtils";
 import { InputButton } from "./InputComponents/Buttons";
-import { FaChartBar, FaPlus} from 'react-icons/fa';
+import { FaChartBar, FaPlus } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { getImages } from "../utils/UploadUtils";
 
@@ -23,22 +23,26 @@ export default function MapComponent() {
     viewDispatch
   } = useContext(AppContext);
 
-  const [imageUrlPositions,setImageUrlPositions] = useState([]);
 
   const navigate = useNavigate();
 
-  const navigateToCharts = () =>{
+  const navigateToCharts = () => {
     navigate("/charts");
   }
 
-  const navigateToUploadComponent = () =>{
+  const navigateToUploadComponent = () => {
     navigate("/uploadlisting");
   }
 
-  const navigateToDisplayComponent = async (listing) =>{
-    const resImages = await getImages("Home",listing.Index,"search-images");
-    console.log(resImages);
-    navigate("/displaylisting",{
+  const navigateToDisplayComponent = async (listing) => {
+    let resImages = [];
+    if (listing.SqFeet !== undefined) {
+      resImages = await getImages("Home", listing.Index, "search-images");
+    }
+    else {
+      resImages = await getImages("Vehicle", listing.Index, "search-images");
+    }
+    navigate("/displaylisting", {
       state: {
         listing,
         resImages
@@ -48,7 +52,6 @@ export default function MapComponent() {
 
 
   const layers = [
-    // only needed when using shadows - a plane for shadows to drop on
     new IconLayer(
       {
         id: 'icon-layer',
@@ -96,7 +99,7 @@ export default function MapComponent() {
       type: 'changeCarFiltersState',
       data: minMaxCoordinates
     })
-    
+
   }
 
 
@@ -111,26 +114,24 @@ export default function MapComponent() {
       onViewStateChange={({ viewState }) => {
         setViewPort(viewState);
       }}
-      style={{
-        position: 'absolute'
-      }}
+      class="Map"
     >
       <Map
         mapStyle="mapbox://styles/mapbox/dark-v11"
-        mapboxAccessToken={'pk.eyJ1Ijoia3NoaXRpejA3IiwiYSI6ImNsYmFrbnF0ajBhaDgzd3BpMnk0Nm84ZGsifQ.uI_5eWkQ7GsYY1J4cDNU1w'}
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       />
-        <InputButton style={{
-          position: 'absolute',
-          left: 30,
-          top: 30,
-          alignSelf: 'flex-start'
-        }} onClick={navigateToCharts}><FaChartBar color="darkblue" size={25}/></InputButton>
-        <InputButton style={{
-          position: 'absolute',
-          left: 30,
-          top: 100,
-          alignSelf: 'flex-start'
-        }} onClick={navigateToUploadComponent}><FaPlus color="darkblue" size={25}/></InputButton>
+      <InputButton style={{
+        position: 'absolute',
+        left: 30,
+        top: 30,
+        alignSelf: 'flex-start'
+      }} onClick={navigateToCharts}><FaChartBar color="darkblue" size={25} /></InputButton>
+      <InputButton style={{
+        position: 'absolute',
+        left: 30,
+        top: 100,
+        alignSelf: 'flex-start'
+      }} onClick={navigateToUploadComponent}><FaPlus color="darkblue" size={25} /></InputButton>
     </DeckGL>
   )
 }

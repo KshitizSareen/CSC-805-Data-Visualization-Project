@@ -1,0 +1,31 @@
+.labelcontainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 20%;
+  }
+
+  .redline{
+    width: 200px;
+    height: 2px;
+    background-color: #e41a1c;
+    align-self: center;
+    margin-bottom: 5%;
+  }
+
+  .blueline{
+    width: 200px;
+    height: 2px;
+    background-color: #377eb8;
+    align-self: center;
+    margin-bottom: 5%;
+  }
+
+  .greenline{
+    width: 200px;
+    height: 2px;
+    background-color: #4daf4a;
+    align-self: center;
+    margin-bottom: 5%;
+  }

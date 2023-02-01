@@ -1,9 +1,7 @@
-import { HomeOptions } from "../../utils/HomeUtils";
-import {Form} from '../Form';
+import { Form } from '../Form';
 
-export const DisplayVehicle = ({listing}) =>{
-    console.log(listing);
-    const options=[
+export const DisplayVehicle = ({ listing }) => {
+    const options = [
         {
             inputType: 'textInput',
             label: 'Manufacturer',
@@ -31,7 +29,7 @@ export const DisplayVehicle = ({listing}) =>{
         {
             inputType: 'textInput',
             label: "Price",
-            value: '$ '+listing.Price,
+            value: '$ ' + listing.Price,
             disabled: true,
         },
         {
@@ -53,7 +51,7 @@ export const DisplayVehicle = ({listing}) =>{
             disabled: true,
         }
     ]
-    return(
-        <Form options={options}/>
+    return (
+        <Form options={options} />
     )
 }

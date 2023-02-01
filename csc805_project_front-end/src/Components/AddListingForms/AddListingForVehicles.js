@@ -1,67 +1,64 @@
 import { useContext, useState } from "react"
 import UploadContext from "../../Context/UploadContext"
 import { fuelTypes, Manufacturers, setAddVehicleDataState, vehicleErrors, vehicleTypes } from "../../utils/CarUtils"
-import { HomeOptions, HousingTypeValues, setAddHomeDataState } from "../../utils/HomeUtils"
 import { UploadImage, UploadVehicleData } from "../../utils/UploadUtils"
-import { ValidateAddressOption, ValidateEmail, ValidateMultipleSelectOption, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
+import { ValidateAddressOption, ValidateEmail, validateOptions, ValidateSelectOption, validationErrors } from "../../utils/ValidatorFunctions"
 import { Form } from "../Form"
 
-export const AddListingForVehicles = () =>{
-    const {            addVehicleDataState,
+export const AddListingForVehicles = () => {
+    const { addVehicleDataState,
         addVehicleDataStateDispatch,
-        imagePositions} = useContext(UploadContext);
+        imagePositions } = useContext(UploadContext);
 
-    const setPrice = (value)=>{
-        setAddVehicleDataState(value,'price',addVehicleDataStateDispatch)
+    const setPrice = (value) => {
+        setAddVehicleDataState(value, 'price', addVehicleDataStateDispatch)
     }
 
-    const setYear = (value)=>{
-        setAddVehicleDataState(value,'year',addVehicleDataStateDispatch)
+    const setYear = (value) => {
+        setAddVehicleDataState(value, 'year', addVehicleDataStateDispatch)
     }
 
-    const setMileage = (value)=>{
-        setAddVehicleDataState(value,'mileage',addVehicleDataStateDispatch)
+    const setMileage = (value) => {
+        setAddVehicleDataState(value, 'mileage', addVehicleDataStateDispatch)
     }
 
-    const setVehicleManufacturers = (value)=>{
-        setAddVehicleDataState(value,'vehicleManufacturer',addVehicleDataStateDispatch)
+    const setVehicleManufacturers = (value) => {
+        setAddVehicleDataState(value, 'vehicleManufacturer', addVehicleDataStateDispatch)
     }
 
-    const setFuelTypes = (value)=>{
-        setAddVehicleDataState(value,'fuelType',addVehicleDataStateDispatch)
+    const setFuelTypes = (value) => {
+        setAddVehicleDataState(value, 'fuelType', addVehicleDataStateDispatch)
     }
 
-    const setVehicleTypes = (value)=>{
-        setAddVehicleDataState(value,'vehicleType',addVehicleDataStateDispatch)
+    const setVehicleTypes = (value) => {
+        setAddVehicleDataState(value, 'vehicleType', addVehicleDataStateDispatch)
     }
 
-    const setAddress = (value)=>{
-        setAddVehicleDataState(value,'address',addVehicleDataStateDispatch)
+    const setAddress = (value) => {
+        setAddVehicleDataState(value, 'address', addVehicleDataStateDispatch)
     }
 
 
-    const [optionErrors,setOptionErrors] = useState(vehicleErrors)
+    const [optionErrors, setOptionErrors] = useState(vehicleErrors)
 
-    const setEmail = (value) =>{
-        setAddVehicleDataState(value,'email',addVehicleDataStateDispatch)
+    const setEmail = (value) => {
+        setAddVehicleDataState(value, 'email', addVehicleDataStateDispatch)
     }
 
-    const submitOptions = () =>{
-        const foundErrors= validateOptions(options,setOptionErrors,vehicleErrors);
-        if(!foundErrors)
-        {
-            const imageURLs= UploadImage(imagePositions);
-            imageURLs.then(data=>{
-             console.log(addVehicleDataState);
-             UploadVehicleData(addVehicleDataState,"insert-vehicle",data).then(res=>{
-                alert(res);
-            })
+    const submitOptions = () => {
+        const foundErrors = validateOptions(options, setOptionErrors, vehicleErrors);
+        if (!foundErrors) {
+            const imageURLs = UploadImage(imagePositions);
+            imageURLs.then(data => {
+                UploadVehicleData(addVehicleDataState, "insert-vehicle", data).then(res => {
+                    alert(res);
+                })
             })
         }
 
     }
 
-    const options=[
+    const options = [
         {
             inputType: 'select',
             options: Manufacturers,
@@ -71,7 +68,7 @@ export const AddListingForVehicles = () =>{
             error: validationErrors.selectError,
             errorToDisplay: optionErrors.manufacturers,
             validatorFunction: ValidateSelectOption,
-            name:'manufacturers'
+            name: 'manufacturers'
         },
         {
             inputType: 'select',
@@ -82,7 +79,7 @@ export const AddListingForVehicles = () =>{
             error: validationErrors.selectError,
             errorToDisplay: optionErrors.fuelTypes,
             validatorFunction: ValidateSelectOption,
-            name:'fuelTypes'
+            name: 'fuelTypes'
         },
         {
             inputType: 'select',
@@ -93,7 +90,7 @@ export const AddListingForVehicles = () =>{
             error: validationErrors.selectError,
             errorToDisplay: optionErrors.vehicleType,
             validatorFunction: ValidateSelectOption,
-            name:'vehicleType'
+            name: 'vehicleType'
         },
         {
             inputType: 'mapsAutocomplete',
@@ -143,11 +140,11 @@ export const AddListingForVehicles = () =>{
             inputType: 'button',
             label: 'Add Vehicle',
             onClick: submitOptions
-          }
+        }
     ]
 
 
-    return(
-        <Form options={options}/>
+    return (
+        <Form options={options} />
     )
 }

@@ -1,49 +1,46 @@
 export const imageURLSState = {
     isArray: true,
-    style:{
+    style: {
         display: 'flex',
-        flexDirection:'column',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    data:[
+    data: [
         {
             isArray: true,
-            style:{
+            style: {
                 display: 'flex',
-                flexDirection:'row',
+                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center'
             },
-            data:[
+            data: [
                 {
                     isArray: false,
                     width: 30,
                     height: 33,
-                    image: "",
                     key: 0
                 },
                 {
                     isArray: true,
-                    style:{
+                    style: {
                         display: 'flex',
-                        flexDirection:'column',
+                        flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center'
                     },
-                    data:[
+                    data: [
                         {
                             isArray: false,
                             width: 20,
                             height: 16.5,
-                            image: "",
                             key: 1
                         },
                         {
                             isArray: false,
                             width: 20,
                             height: 16.5,
-                            image: "",
                             key: 2
                         },
                     ]
@@ -52,34 +49,32 @@ export const imageURLSState = {
         },
         {
             isArray: true,
-            style:{
+            style: {
                 display: 'flex',
-                flexDirection:'row',
+                flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center'   
+                alignItems: 'center'
             },
-            data:[
+            data: [
                 {
                     isArray: true,
-                    style:{
+                    style: {
                         display: 'flex',
-                        flexDirection:'column',
+                        flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center'
                     },
-                    data:[
+                    data: [
                         {
                             isArray: false,
                             width: 20,
                             height: 16.5,
-                            image: "",
                             key: 3
                         },
                         {
                             isArray: false,
                             width: 20,
                             height: 16.5,
-                            image: "",
                             key: 4
                         },
                     ]
@@ -88,66 +83,61 @@ export const imageURLSState = {
                     isArray: false,
                     width: 30,
                     height: 33,
-                    image: "",
                     key: 5
                 }
             ]
         },
         {
             isArray: true,
-            style:{
+            style: {
                 display: 'flex',
-                flexDirection:'row',
+                flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center'
             },
-            data:[
+            data: [
                 {
                     isArray: true,
-                    style:{
+                    style: {
                         display: 'flex',
-                        flexDirection:'column',
+                        flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center'
                     },
-                    data:[
+                    data: [
                         {
                             isArray: false,
                             width: 25,
                             height: 16.5,
-                            image: "",
                             key: 6
                         },
                         {
                             isArray: false,
                             width: 25,
                             height: 16.5,
-                            image: "",
                             key: 7
                         },
                     ]
                 },
                 {
                     isArray: true,
-                    style:{
+                    style: {
                         display: 'flex',
-                        flexDirection:'column',
+                        flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center'
                     },
-                    data:[
+                    data: [
                         {
                             isArray: false,
                             width: 25,
                             height: 16.5,
-                            image: "",
                             key: 8
                         },
                         {
                             isArray: false,
                             width: 25,
                             height: 16.5,
-                            image: "",
                             key: 9
                         },
                     ]
@@ -159,9 +149,8 @@ export const imageURLSState = {
 
 const initialImagePositions = []
 
-for(let i=0;i<10;i++)
-{
-    initialImagePositions[i]="";
+for (let i = 0; i < 10; i++) {
+    initialImagePositions[i] = "";
 }
 
-export {initialImagePositions};
+export { initialImagePositions };

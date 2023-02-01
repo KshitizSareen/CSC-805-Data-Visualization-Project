@@ -1,13 +1,9 @@
-import React, { useContext, useState } from 'react';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import AppContext from '../Context/AppContext';
 import { CategoryHeadersComponent } from './CategoryHeadersComponent';
 import CarFilters from './FIlters/CarFilters';
 import HomeFilters from './FIlters/HomeFilters';
-import { InputButton } from './InputComponents/Buttons';
-
+import '../styles/filters.css';
 
 export default function FiltersComponent() {
 
@@ -22,20 +18,8 @@ export default function FiltersComponent() {
   ];
 
   return (
-    <div id="filters" style={{
-      width: 0.3 * window.parent.innerWidth,
-      height: window.parent.innerHeight,
-      backgroundColor: 'whitesmoke',
-      display: 'flex',
-      flexDirection: 'column',
-      left: 0.7 * window.parent.innerWidth,
-      top: 0,
-      position: 'absolute',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflow: 'hidden',
-    }}>
-      <CategoryHeadersComponent radios={radios} Category={initialCategory} SetCategory={setInitialCategory}/>
+    <div id="filters">
+      <CategoryHeadersComponent radios={radios} Category={initialCategory} SetCategory={setInitialCategory} />
       {
         initialCategory === '1' ?
           <HomeFilters /> :

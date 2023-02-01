@@ -4,36 +4,36 @@ import { AddListingForHomes } from "./AddListingForms/AddListingForHomes";
 import { AddListingForVehicles } from "./AddListingForms/AddListingForVehicles";
 import { CategoryHeadersComponent } from "./CategoryHeadersComponent";
 
-export const AddListingForms = () =>{
+export const AddListingForms = () => {
 
     const [
         initialCategory,
         setInitialCategory
-    ]= useState('1')
+    ] = useState('1')
 
     const {
         hideForm
     } = useContext(UploadContext);
-    
-      const radios = [
+
+    const radios = [
         { name: 'Homes', value: '1' },
         { name: 'Vehicles', value: '2' },
-      ];
-    return(
+    ];
+    return (
         <div style={{
             width: '50vw',
             height: '100vh',
             justifyContent: 'center',
             alignItems: 'center',
-            display: hideForm ?  'flex': 'none',
+            display: hideForm ? 'flex' : 'none',
             flexDirection: 'column',
         }}>
-            <CategoryHeadersComponent radios={radios} Category={initialCategory} SetCategory={setInitialCategory}/>
+            <CategoryHeadersComponent radios={radios} Category={initialCategory} SetCategory={setInitialCategory} />
             {
                 initialCategory === '1' ?
-                <AddListingForHomes/>
-                : 
-                <AddListingForVehicles/>
+                    <AddListingForHomes />
+                    :
+                    <AddListingForVehicles />
             }
         </div>
     )

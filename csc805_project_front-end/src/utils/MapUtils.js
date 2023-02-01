@@ -15,9 +15,8 @@ export const GetMinMaxCoordinates = (mapState) => {
     }
 }
 
-const SetMapData = (filters, dispatchFunction,endPoint) => {
-    axios.post(process.env.REACT_APP_API_URL+endPoint, filters).then(res => {
-        console.log(res.data);
+const SetMapData = (filters, dispatchFunction, endPoint) => {
+    axios.post(process.env.REACT_APP_API_URL + endPoint, filters).then(res => {
 
         dispatchFunction({
             type: 'changeResultsState', results: res.data

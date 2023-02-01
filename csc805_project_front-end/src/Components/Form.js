@@ -6,13 +6,14 @@ import { Select } from "./InputComponents/Select";
 import { InputSlider } from "./InputComponents/Slider";
 import { FormTextField } from "./InputComponents/TextField";
 import { TextInput } from "./InputComponents/TextInput";
+import '../styles/form.css';
 
 const getComponent = (inputType) => {
     const components = {
         'multipleSelect': MultipleSelect,
         'range': RangeSlider,
         'button': InputButton,
-        'mapsAutocomplete' : MapsAutocomplete,
+        'mapsAutocomplete': MapsAutocomplete,
         'select': Select,
         'slider': InputSlider,
         'textInput': TextInput,
@@ -25,24 +26,25 @@ export const Form = ({ options }) => {
     return (
         <>
             {
-                options.map((option) => {
-                    const { inputType, options, label, placeHolder, 
-                        onChange, value,SuperSricpt,
-                        minValue,maxValue,onClick,
-                        errorToDisplay,disabled} = option;
+                options.map((option, index) => {
+                    const { inputType, options, label, placeHolder,
+                        onChange, value, SuperSricpt,
+                        minValue, maxValue, onClick,
+                        errorToDisplay, disabled } = option;
                     const Component = getComponent(inputType);
-                    return <Component 
-                    options={options} 
-                    value={value} 
-                    label={label} 
-                    placeholder={placeHolder} 
-                    onChange={onChange} 
-                    SuperSricpt={SuperSricpt} 
-                    minValue={minValue}
-                    maxValue={maxValue}
-                    onClick={onClick}
-                    error={errorToDisplay}
-                    disabled={disabled}
+                    return <Component
+                        options={options}
+                        value={value}
+                        label={label}
+                        placeholder={placeHolder}
+                        onChange={onChange}
+                        SuperSricpt={SuperSricpt}
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        onClick={onClick}
+                        error={errorToDisplay}
+                        disabled={disabled}
+                        key={index}
                     />
                 })
             }

@@ -1,4 +1,4 @@
-export const initialAddVehicleDataState ={
+export const initialAddVehicleDataState = {
     vehicleManufacturer: null,
     fuelType: null,
     vehicleType: null,
@@ -6,11 +6,11 @@ export const initialAddVehicleDataState ={
     year: 2000,
     mileage: 20000,
     address: null,
-    email : ""
+    email: ""
 }
 
-export const AddVehiclesDataStateReducer = (state,action) =>{
-    switch (action.type){
+export const AddVehiclesDataStateReducer = (state, action) => {
+    switch (action.type) {
         case 'changeAddVehicleDataState': {
             return {
                 ...state,

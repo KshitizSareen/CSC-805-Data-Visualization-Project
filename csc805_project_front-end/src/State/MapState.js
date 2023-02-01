@@ -43,8 +43,8 @@ export default function MapReducer(state, action) {
       }
     }
 
-    case 'changeViewState':{
-      return{
+    case 'changeViewState': {
+      return {
         ...state,
         ...action.viewState
       }

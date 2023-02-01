@@ -1,35 +1,35 @@
-export const setAddVehicleDataState = (value,property,dispatchFunction)=>{
-    dispatchFunction({
-        type: 'changeAddVehicleDataState',
-        data:{
-            [property]: value
-        }
-    })
+export const setAddVehicleDataState = (value, property, dispatchFunction) => {
+  dispatchFunction({
+    type: 'changeAddVehicleDataState',
+    data: {
+      [property]: value
+    }
+  })
 }
 
 export const Manufacturers = require('../Data/carManufacturers.json');
 
 export const fuelTypes = [
-    {
-      label: 'Gas',
-      value: 0,
-    },
-    {
-      label: 'Diesel',
-      value: 1,
-    },
-    {
-      label: 'Other',
-      value: 2,
-    },
-    {
-      label: 'Hybrid',
-      value: 3,
-    },
-    {
-      label: 'Electric',
-      value: 4,
-    },
+  {
+    label: 'Gas',
+    value: 0,
+  },
+  {
+    label: 'Diesel',
+    value: 1,
+  },
+  {
+    label: 'Other',
+    value: 2,
+  },
+  {
+    label: 'Hybrid',
+    value: 3,
+  },
+  {
+    label: 'Electric',
+    value: 4,
+  },
 ]
 
 export const vehicleTypes = [
@@ -88,10 +88,10 @@ export const vehicleTypes = [
 
 ]
 
-export const vehicleErrors=        {
-    manufacturers:"",
-    fuelTypes:"",
-    vehicleType: "",
-    address: "",
-    email : ""
-  }
+export const vehicleErrors = {
+  manufacturers: "",
+  fuelTypes: "",
+  vehicleType: "",
+  address: "",
+  email: ""
+}

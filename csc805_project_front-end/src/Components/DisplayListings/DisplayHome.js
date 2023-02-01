@@ -1,19 +1,18 @@
 import { HomeOptions } from "../../utils/HomeUtils";
-import {Form} from '../Form';
+import { Form } from '../Form';
 
-export const DisplayHome = ({listing}) =>{
-    console.log(listing);
-    const options=[
+export const DisplayHome = ({ listing }) => {
+    const options = [
         {
             inputType: 'textInput',
             label: 'Home Type',
-            value: listing.Type_Category.split(" ").map(value=>value[0].toUpperCase() + value.slice(1, value.length)).join(),
+            value: listing.Type_Category.split(" ").map(value => value[0].toUpperCase() + value.slice(1, value.length)).join(),
             disabled: true
         },
         {
             inputType: 'textInput',
             label: "Amentities",
-            value: HomeOptions.filter(option=>listing[option.name]===1).map(option=>option.label).join(', '),
+            value: HomeOptions.filter(option => listing[option.name] === 1).map(option => option.label).join(', '),
             disabled: true,
         },
         {
@@ -25,7 +24,7 @@ export const DisplayHome = ({listing}) =>{
         {
             inputType: 'textInput',
             label: "Price",
-            value: '$ '+listing.Price,
+            value: '$ ' + listing.Price,
             disabled: true,
         },
         {
@@ -53,7 +52,7 @@ export const DisplayHome = ({listing}) =>{
             disabled: true,
         }
     ]
-    return(
-        <Form options={options}/>
+    return (
+        <Form options={options} />
     )
 }

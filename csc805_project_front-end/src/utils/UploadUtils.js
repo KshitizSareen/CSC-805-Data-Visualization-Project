@@ -155,7 +155,7 @@ const uploadImagePositionsToDatabase = async (images, endPoint, type, listingID)
                 "position": i
             })
     }
-    return "Upload Succesfull"
+    return "Upload Succesful"
 }
 
 export const getImages = async (type, listingID, endpoint, setImages) => {

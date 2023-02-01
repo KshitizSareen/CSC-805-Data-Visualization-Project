@@ -124,7 +124,7 @@ export const VerticalBarComponent = ({ setXAxisValue, setYAxisValue, svgWidth, s
     categoryElems
       .enter()
       .append("rect").on('mouseover', (e, d) => {
-        setXAxisValue('$' + d.value);
+        setXAxisValue('$' + d3.format(".2f")(d.value));
         setYAxisValue(d.category);
       }).on('mouseout', () => {
         setXAxisValue();

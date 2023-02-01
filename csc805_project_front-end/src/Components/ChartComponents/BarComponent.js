@@ -129,7 +129,7 @@ export const BarComponent = ({ setXAxisValue, setYAxisValue, svgWidth, svgHeight
       .enter()
       .append("rect").on('mouseover', (e, d) => {
         setXAxisValue(d.category);
-        setYAxisValue('$' + d.value);
+        setYAxisValue('$' + d3.format(".2f")(d.value));
       }).on('mouseout', () => {
         setXAxisValue();
         setYAxisValue()

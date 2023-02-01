@@ -37,18 +37,18 @@ with open("carModels.json", "w") as final:
 """
 
 
-carManufacturers=pd.read_json("./Data/carManufacturers.json")
+carManufacturers = pd.read_json("./Data/carManufacturers.json")
 print(carManufacturers)
 
 
-DataFrameArray=[]
-k=0
+DataFrameArray = []
+k = 0
 for index in carManufacturers.index:
     DataFrameArray.append({
         'label': carManufacturers['name'][k],
         'id': k
     })
-    k+=1
+    k += 1
 with open("carManufacturers.json", "w") as final:
     json.dump(DataFrameArray, final)
 
